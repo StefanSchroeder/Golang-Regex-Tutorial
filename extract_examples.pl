@@ -36,7 +36,7 @@ while(<>)
 		$in = 0;
 		if($section)
 		{
-			$e .= "{ // $i \n" . $section . "} // $i \n" if ($i != 1);
+			$e .= "{ // $i \n" . $section . "} // $i \n";
 			$section = '';
 		}
 	}
