@@ -41,7 +41,7 @@ Character class '\d' represents any numeric digit.
 	// Will print 'false'. .
 	fmt.Printf("%v ", re4.MatchString("Hello Regular Expression."))
 
-The FindString-function ...
+The FindString-function finds a string. When you use a literal string, the result will obviuosly be the string itself. Only when you start using patters and classes the result will be more interesting.
 
 		re1, _ := regexp.Compile(`Hello`)
 		// Will print 'Hello'
@@ -61,10 +61,9 @@ The FindString-function ...
 
 ## Special Characters ##
 
-THe dot.
+The dot '.' matches any character.
 
 		// Will print 'Hello'. (Leftmost match).
-		// '.' matches any character.
 		re3, _ := regexp.Compile(`H.llo`)
 		fmt.Printf(re3.FindString("Hello Regular Expression."))
 
@@ -78,7 +77,7 @@ THe dot.
 		s:= "Nobody expects the Spanish inquisition."
 		//          -- --     --
 		re1, _ := regexp.Compile(`e.`)
-		result_slice := re1.FindAllString(s, -1) // negative: all
+		result_slice := re1.FindAllString(s, -1) // negative: all matches
 		// Prints [ex ec e ]. The last item is 'e' and a space.
 		fmt.Printf("%v", result_slice)
 		result_slice = re1.FindAllString(s, 2) // find 2 or less matches
@@ -87,8 +86,8 @@ THe dot.
 
 ## Literal Special Characters ##
 
-		// Finding one backslash '\'. It must be escaped twice
-		// in the regex and once in the string.
+Finding one backslash '\'. It must be escaped twice in the regex and once in the string.
+
 		re5, _ := regexp.Compile(`C:\\\\`)
 		if re5.MatchString("Working on drive C:\\") == true {
 			fmt.Printf("Matches.")
@@ -96,11 +95,8 @@ THe dot.
 			fmt.Printf("No match.")
 		}
 
-		fmt.Printf("\n----------------------\n");
+Finding a literal dot:
 
-		// Similiarly for the other special characters that are relevant
-		// for constructing regular expressions: .+*?()|[]{}^$
-		// Note the reversed logic compared to the previous example.
 		re6, _ := regexp.Compile(`\.`)
 		if re6.MatchString("Short.") == true {
 			fmt.Printf("Has a dot.") // <-
@@ -108,7 +104,9 @@ THe dot.
 			fmt.Printf("Has no dot.")
 		}
 
-		fmt.Printf("\n----------------------\n");
+The other special characters that are relevant for constructing regular expressions work in a similar fashion: .+*?()|[]{}^$
+
+Finding a literal dollar symbol:
 
 		re7, _ := regexp.Compile(`\$`)
 		if len(re7.FindString("He paid $150 for that software.")) != 0 {
@@ -120,7 +118,7 @@ THe dot.
 ## Simple Repetition ##
 
 Finding words. A word is a set of characters of type \w.
-'+' means: 1 or more of this.
+The plus symbol '+' signifies a repetition:
 
 		s := "Eenie meenie miny moe."
 		re1, _ := regexp.Compile(`\w+`)
@@ -139,10 +137,10 @@ The caret symbol ^ denotes a 'begin-of-line'.
 		re1, _ = regexp.Compile(`^n`)         // Do we have an 'n' at the beginning?
 		fmt.Printf("%v ", re1.MatchString(s)) // false
 	
-If you want your regular ex
-
 		re1, _ = regexp.Compile(`(?i)^n`)     // Do we have an 'N' or 'n' at the beginning?
 		fmt.Printf("%v ", re1.MatchString(s)) // true again, case insensitive
+
+The last regular expression introduced a new concept: (?i) denotes case-insensitivity. (See next section.)
 
 The dollar symbol $ denotes an 'end-of-line'.
 
@@ -156,23 +154,24 @@ The dollar symbol $ denotes an 'end-of-line'.
 		re1, _ = regexp.Compile(`ends$`)
 		fmt.Printf("%v ", re1.MatchString(s)) // false, not at end of line.
 
-		// '$' ends-with.
+We saw that 'well' matched. To figure out, where exactly the regexp matched, let's have a look at the indexes.
+
 		s := "All is well that ends well"
-		//    012345678901
+		//    012345678901234567890123456
+		//              1         2
 		re1, _ := regexp.Compile(`well$`)
-		fmt.Printf("%v ", re1.MatchString(s)) // true
 		fmt.Printf("%v", re1.FindStringIndex(s)) // Prints [22 26]
 	
 		re1, _ = regexp.Compile(`well`)
 		fmt.Printf("%v ", re1.MatchString(s)) // true, but matches with first
-						      // occurrence of 'well'
+						 					  // occurrence of 'well'
 		fmt.Printf("%v", re1.FindStringIndex(s)) // Prints [7 11]
 	
 		re1, _ = regexp.Compile(`ends$`)
 		fmt.Printf("%v ", re1.MatchString(s)) // false, not at end of line.
 
+You can find a word boundary with '\b'.
 
-		// '\b' word boundary
 		s := "How much wood would a woodchuck chuck in Hollywood?"
 		//    012345678901234567890123456789012345678901234567890
 		//              10        20        30        40        50
@@ -189,18 +188,28 @@ The dollar symbol $ denotes an 'end-of-line'.
 		re1, _ = regexp.Compile(`\bwood\b`)             //   1
 		fmt.Printf("%v", re1.FindAllStringIndex(s, -1)) // [[9 13]]
 
+
+## Flags ##
+
+The regexp package knows the following flags:
+
+* i	case-insensitive (default false)
+* m	multi-line mode: ^ and $ match begin/end line in addition to begin/end text (default false)
+* s	let . match \n (default false)
+* U	ungreedy: swap meaning of x* and x*?, x+ and x+?, etc (default false)
+
+Flag syntax is xyz (set) or -xyz (clear) or xy-z (set xy, clear z).
+
 ## Character Classes ##
 
-		// [uio] is a "character class". Any of the characters in the
-		// squar brackets will do.
-		// So this will match 'Hullo', 'Hillo', and 'Hollo' 
+Instead of a literal character you can require a set (or class) of characters at any location. In this example [uio] is a "character class". Any of the characters in the square brackets will satisfy the regexp. Thus, this regexp will match 'Hullo', 'Hillo', and 'Hollo' 
+		
 		re1, _ := regexp.Compile(`H[uio]llo`)
 		// Will print 'Hullo'.
 		fmt.Printf(re1.FindString("Hello Regular Expression. Hullo again."))
 
-		// Negated character class. Will match all strings 'H.llo', where the
-		// dot is _not_ 'o', 'i' or 'u'. Thus will not match 
-		// "Hullo", "Hillo", "Hollo", but it will match "Hallo" and even "H9llo".
+A negated character class reverses the match of the class. Will match all strings 'H.llo', where the dot is *not* 'o', 'i' or 'u'. It will not match "Hullo", "Hillo", "Hollo", but it will match "Hallo" and even "H9llo".
+
 		re2, _ := regexp.Compile(`H[^uio]llo`)
 		fmt.Printf("%v ", re2.MatchString("Hillo")) // false
 		fmt.Printf("%v ", re2.MatchString("Hallo")) // true
