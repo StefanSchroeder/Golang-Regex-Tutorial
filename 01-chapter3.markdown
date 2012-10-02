@@ -98,4 +98,12 @@ This tool is an improved version of grep. It does not only search for a pattern,
 		}
 	}
 
+## Verifying an email-address ##
+
+
+
+
+## Reading a bill ##
+
+Find the right column. Extract the number.
 

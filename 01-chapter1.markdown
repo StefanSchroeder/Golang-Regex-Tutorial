@@ -19,7 +19,9 @@ You want to know if a string matches a simple regular expression. The *MatchStri
  		}
  	}
 
-The *Compile*-function returns in its second argument an error code. In this tutorial I will usually discard it, because of course all my regexes are perfect ;-).
+*Compile* is the heart of the regexp-package. Every regular expression must be prepared before use with it.
+
+The *Compile*-function returns in its second argument an error code. In this tutorial I will usually discard it, because of course all my regexes are perfect ;-). 
 
 For the rest of this tutorial the enclosing main function will always be assumed.
 
@@ -134,9 +136,6 @@ The caret symbol ^ denotes a 'begin-of-line'.
 	
 		re1, _ = regexp.Compile(`^n`)         // Do we have an 'n' at the beginning?
 		fmt.Printf("%v ", re1.MatchString(s)) // false
-	
-		re1, _ = regexp.Compile(`(?i)^n`)     // Do we have an 'N' or 'n' at the beginning?
-		fmt.Printf("%v ", re1.MatchString(s)) // true again, case insensitive
 
 The last regular expression introduced a new concept: (?i) denotes case-insensitivity. (See next section.)
 
@@ -197,6 +196,8 @@ The regexp package knows the following flags:
 * U	ungreedy: swap meaning of x* and x*?, x+ and x+?, etc (default false)
 
 Flag syntax is xyz (set) or -xyz (clear) or xy-z (set xy, clear z).
+
+Usage will be discussed in the next part.
 
 ## Character Classes ##
 
