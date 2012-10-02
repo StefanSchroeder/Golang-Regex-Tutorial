@@ -2,7 +2,7 @@
 
 ## Simple Matching ##
 
-You want to know if a string matches a simple regular expression.
+You want to know if a string matches a simple regular expression. The *MatchString*-function returns 'true' if the string-argument matches the regular expression.
 
  	package main
  	import ( "regexp"
@@ -19,7 +19,7 @@ You want to know if a string matches a simple regular expression.
  		}
  	}
 
-The Compile-function returns in its second argument an error code. In this tutorial I will usually discard it, because of course all my regexes are perfect ;-).
+The *Compile*-function returns in its second argument an error code. In this tutorial I will usually discard it, because of course all my regexes are perfect ;-).
 
 For the rest of this tutorial the enclosing main function will always be assumed.
 
@@ -29,7 +29,7 @@ This regular expression will not match:
 	// Will print 'false'
 	fmt.Printf("%v ", re2.MatchString("Hello Regular Expression."))
 
-Character class '\w' represents any character from the class [a-z0-9_].
+Character class '\w' represents any character from the class [A-Za-z0-9_], mnemonic 'word'-character.
 
 	re3, _ := regexp.Compile(`H\wllo`)
 	// Will print 'true'. 
@@ -37,11 +37,13 @@ Character class '\w' represents any character from the class [a-z0-9_].
 
 Character class '\d' represents any numeric digit.
 
-	re4, _ := regexp.Compile(`H\dllo`)
+	re4, _ := regexp.Compile(`\d`)
+	// Will print 'true'. .
+	fmt.Printf("%v ", re4.MatchString("Seven times seven is 49."))
 	// Will print 'false'. .
-	fmt.Printf("%v ", re4.MatchString("Hello Regular Expression."))
+	fmt.Printf("%v ", re4.MatchString("Seven times seven is forty-nine."))
 
-The FindString-function finds a string. When you use a literal string, the result will obviuosly be the string itself. Only when you start using patters and classes the result will be more interesting.
+The *FindString*-function finds a string. When you use a literal string, the result will obviuosly be the string itself. Only when you start using patters and classes the result will be more interesting.
 
 		re1, _ := regexp.Compile(`Hello`)
 		// Will print 'Hello'
@@ -63,15 +65,9 @@ The FindString-function finds a string. When you use a literal string, the resul
 
 The dot '.' matches any character.
 
-		// Will print 'Hello'. (Leftmost match).
-		re3, _ := regexp.Compile(`H.llo`)
-		fmt.Printf(re3.FindString("Hello Regular Expression."))
-
-		// Prints [ex e x]
-		s := "Nobody expects the Spanish inquisition."
-		re1, _ := regexp.Compile(`(e)(.)`) // Prepare our regex
-		result_slice := re1.FindStringSubmatch(s)
-		fmt.Printf("%v", result_slice)
+		// Will print 'cat'. (Leftmost match).
+		re3, _ := regexp.Compile(`.at`)
+		fmt.Printf(re3.FindString("The cat sat on the mat."))
 
 		// more dot.
 		s:= "Nobody expects the Spanish inquisition."
@@ -126,6 +122,8 @@ The plus symbol '+' signifies a repetition:
 		// Prints [Eenie meenie miny moe]
 		fmt.Printf("%v", result_slice)
 
+In contrast to wildcards used on the commandline for file pattern matching, the '\*' does not symbolize 'any character', but the repetition of the previous character (or group). While the '+' requires at least a single occurence of its preceding symbol, the '*' is also satisfied with 0 occurences. This can lead to strange results. You usually want '+'.
+
 ## Anchor and Boundaries ##
 
 The caret symbol ^ denotes a 'begin-of-line'.
@@ -165,7 +163,7 @@ We saw that 'well' matched. To figure out, where exactly the regexp matched, let
 		re1, _ = regexp.Compile(`well`)
 		fmt.Printf("%v ", re1.MatchString(s)) // true, but matches with first
 						 					  // occurrence of 'well'
-		fmt.Printf("%v", re1.FindStringIndex(s)) // Prints [7 11]
+		fmt.Printf("%v", re1.FindStringIndex(s)) // Prints [7 11], the match starts at 7 and end before 11.
 	
 		re1, _ = regexp.Compile(`ends$`)
 		fmt.Printf("%v ", re1.MatchString(s)) // false, not at end of line.
@@ -215,5 +213,4 @@ A negated character class reverses the match of the class. Will match all string
 		fmt.Printf("%v ", re2.MatchString("Hallo")) // true
 		fmt.Printf("%v ", re2.MatchString("H9llo")) // true
 
-EOL, BOL, unicode
 

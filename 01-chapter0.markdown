@@ -6,15 +6,17 @@ The text was written in Markdown.
 
 In the first draft I am going to cover only the functions from the regexp-package that deal with strings, because I feel that this is the most common use.
 
-[Part 1: The Basics](01-chapter01)
+[Part 1: The Basics](01-chapter1.html): The basics of using regular expressions.
 
-[Part 2: Advanced](01-chapter02)
+[Part 2: Advanced](01-chapter2.html): More sophisticated regular expressions.
 
-[Part 3: Cookbook](01-chapter03)
+[Part 3: Cookbook](01-chapter3.html): A few examples from the real world.
+
+[Part 4: Alternatives](01-chapter4.html): When regexp's are not the right solution.
 
 References:
 
-[official documentation of the regexp package](http://golang.org/pkg/regexp/)
+[Official documentation of the regexp package](http://golang.org/pkg/regexp/)
 
 [re2 regular expression library that is used in Go](https://code.google.com/p/re2/)
 
