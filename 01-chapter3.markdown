@@ -21,7 +21,7 @@ The grep-tool searches for (regular) expressions in text files. Every single lin
 	    f := bufio.NewReader(fh)
 
 	    if err != nil {
-		return // there was a problem opening the file.
+			return // there was a problem opening the file.
 	    }
 	    defer fh.Close()
 
@@ -53,7 +53,10 @@ If you don't know what grep does, search 'man grep'.
 
 ## Search and Replace ##
 
-This tool is an improved version of grep. It does not only search for a pattern, but can also replace the pattern with something else. We will obviously want to build on the existing grep solution.
+This tool is an improved version of grep. It does not only search for a pattern, but also replaces the pattern with something else. We will obviously want to build on the existing grep solution.
+
+Usage: ./replacer old new filename
+
 
 	package main
 
@@ -100,10 +103,77 @@ This tool is an improved version of grep. It does not only search for a pattern,
 
 ## Verifying an email-address ##
 
+Interestingly the RFC 2822 which defines the format of email-addresses is pretty permissive.
+That makes it hard to come up with a simple regular expression. In most cases though your 
+application can make some assumptions about addresses and I found this one sufficient for
+all practical purposes:
+ 	
+	(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})
 
-
+It must start with a character of the \w class. Then we can have any number of characters including the hyphen, the '.' and the underscore. We want the last character before the @ to be a 'regular' character again. We repeat the same pattern for the domain, only that the suffix (part behind the last dot) can be only 2 or 3 characters. This will cover most cases. If you come across an email address that does not match this regexp it has probably deliberately been setup to annoy you and you can therefore ignore it.
 
 ## Reading a bill ##
 
-Find the right column. Extract the number.
+Say you have a text file with the following layout:
+
+	Item 1: $10
+	Item 2: $5
+	Item 3: $7.50
+	Item N: $99.99
+
+Your assignment is to sum up all the individual amounts and present the sum.
+You will find that the complexity of your regexp increases the more relaxed
+the rules are that led to the construction of the text file in the first place. 
+For example, is it guaranteed that there is no space between the dollar sign 
+and the number? Are there limits to the number of digits? What if somebody
+enters a "," for amounts bigger than 999? For simplicity we will make the 
+following assumptions: There is _no_ space between the dollar sign and the 
+number. There can be no comma and the dot is the only accepted separator.
+(Good-bye, i18n).
+
+	package main
+
+	import (
+		"flag"
+		"regexp"
+		"bufio"
+		"fmt"
+		"os"
+	)
+
+	func grep(re, filename string) {
+	    regex, _ := regexp.Compile("\$(\d*)\.?(\d*)?")
+
+	    fh, err := os.Open(filename)
+	    f := bufio.NewReader(fh)
+
+	    if err != nil {
+			return // there was a problem opening the file.
+	    }
+	    defer fh.Close()
+
+	    buf := make([]byte, 1024)
+	    for {
+			buf, _ , err = f.ReadLine()
+			if err != nil {
+				return
+			}
+
+			s := string(buf)
+			
+			res := regex.FindString(s) 
+			if len(res) > 0 {
+				fmt.Printf("%v\n", res)
+			}
+	    }
+	}
+
+	func main() {
+		flag.Parse()
+		if flag.NArg() == 1 {
+			grep(flag.Arg(0))
+		} else {
+			fmt.Printf("Wrong number of arguments.\n")
+		}
+	}
 
