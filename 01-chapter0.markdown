@@ -14,7 +14,7 @@ In the first version I am going to cover only functions from the regexp-package 
 
 [Part 4: Alternatives](01-chapter4.html): When regexps are not the right solution.
 
-References:
+*References:*
 
 [Official documentation of the regexp package](http://golang.org/pkg/regexp/)
 
@@ -28,5 +28,5 @@ References:
 
 This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.
 
-Written by Stefan Schroeder 'ondekoza'.
+Written by Stefan Schroeder.
 

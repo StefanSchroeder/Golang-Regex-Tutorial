@@ -6,13 +6,13 @@ Parentheses allow to capture that piece of the string that you are actually inte
 
 		//[[cat] [sat] [mat]]
 		re, _ := regexp.Compile(`.at`)
-		result_slice := re.FindAllStringSubmatch("The cat sat on the mat.", -1)
-		fmt.Printf("%v", result_slice)
+		res := re.FindAllStringSubmatch("The cat sat on the mat.", -1)
+		fmt.Printf("%v", res)
 
 		//[[cat c] [sat s] [mat m]]
 		re, _ := regexp.Compile(`(.)at`) // want to know what is in front of 'at'
-		result_slice := re.FindAllStringSubmatch("The cat sat on the mat.", -1)
-		fmt.Printf("%v", result_slice)
+		res := re.FindAllStringSubmatch("The cat sat on the mat.", -1)
+		fmt.Printf("%v", res)
 
 You can have more than one group.
 
@@ -29,7 +29,7 @@ If you have an optional group that does not appear in the string, the resulting 
 	s := "Mr. Leonard Spock"
 	re1, _ := regexp.Compile(`(Mr)(s)?\. (\w+) (\w+)`)
 	result:= re1.FindStringSubmatch(s)
-
+	
 	for k, v := range result {
 		fmt.Printf("%d. %s\n", k, v)
 	}
@@ -47,7 +47,7 @@ You cannot have partially overlapping groups. If we wanted the first regexp to m
 	// Wanted regex1          --------------
 	// Wanted regex2                   --------------
 	result:= re1.FindStringSubmatch(s)
-
+	
 	for k, v := range result {
 		fmt.Printf("%d. %s\n", k, v)
 	}
@@ -59,17 +59,58 @@ You cannot have partially overlapping groups. If we wanted the first regexp to m
 
 ## Non-matching capture/group repetition #
 
-If a complex regular expressions has several groups you might arrive at a situation where we use parentheses for grouping but are not the least interested in the captured string. To discard the match of a group you can make it a 'non-capturing group' with (?regex). The question mark tells the compiler to use the pattern for matching but not to store it.
+If a complex regular expressions has several groups you might arrive at a situation where we use parentheses for grouping but are not the least interested in the captured string. To discard the match of a group you can make it a 'non-capturing group' with (?:regex). The question mark and colon tell the compiler to use the pattern for matching but not to store it.
 
-	s := "Mrs. Leonara Spock"
-	re1, _ := regexp.Compile(`Mr(?s)?\. (\w+) (\w+)`)
+Without a non-capturing group:
+
+	s := "Mrs. Leonora Spock"
+	re1, _ := regexp.Compile(`Mr(s)?\. (\w+) (\w+)`)
 	result:= re1.FindStringSubmatch(s)
-	fmt.Printf("Hello, %v %v", result[1], result[2])
-	// Prints 'Hello, Leonard Spock'
-	// The 
+	for k, v := range result {
+		fmt.Printf("%d. %s\n", k, v)
+	}
+	// 0. Mrs. Leonora Spock
+	// 1. s
+	// 2. Leonora
+	// 3. Spock
+
+With a non-capturing group:
+
+	s := "Mrs. Leonora Spock"
+	re1, _ := regexp.Compile(`Mr(?:s)?\. (\w+) (\w+)`)
+	result:= re1.FindStringSubmatch(s)
+	for k, v := range result {
+		fmt.Printf("%d. %s\n", k, v)
+	}
+	// 0. Mrs. Leonora Spock
+	// 1. Leonora
+	// 2. Spock
 
 
-## {} ##
+## How many exactly? ##
+
+The number of required repetitions might be well known. If you know how many instances you need of parts of your regexp we will need {}.
+
+	s := "11110010101111100101001001110101"
+	re1, _ := regexp.Compile(`1{4}`)
+	res := re1.FindAllStringSubmatch(s,-1)
+	fmt.Printf("<%v>", res)
+	// <[[1111] [1111]]>
+	
+	res2 := re1.FindAllStringIndex(s,-1)
+	fmt.Printf("<%v>", res2)
+	// <[[0 4] [10 14]]>
+
+The {} syntax is rarely used. One of the reasons being that in many (all?) cases you can rewrite the regexp by simply writing out the number of repetitions literally. [I can see that you might not want to do that for, say, 120.] Only when you have very specific requirements (like {123,130}) you will want to use {}.
+
+    (ab){3} == (ababab)
+    (ab){3,4} == (ababab(ab)??)
+
+> Side note: ?? stands for "zero or one x, prefer zero".
+
+The general pattern for {} is x{n,m}. 'n' is the minimum number of occurrences and 'm' is the maximum number of occurences.
+
+The Go-regexp package supports a few more patterns in the {} familiy.
 
 # Flags #
 
@@ -89,16 +130,16 @@ You might already know that some characters exist in two cases: Upper and lower.
 If you explicitly want to ignore the case, in other words, if you want to permit both cases for a regexp or a part of it, you use the 'i' flag.
 
 		s := "Never say never."
-		r, _ = regexp.Compile(`(?i)^n`)     // Do we have an 'N' or 'n' at the beginning?
+		r, _ := regexp.Compile(`(?i)^n`)     // Do we have an 'N' or 'n' at the beginning?
 		fmt.Printf("%v", r.MatchString(s)) // true, case insensitive
 
 Matching against a case-insensitive regexp is rarely done is the real world. Usually we prefer to convert the entire string to either upper or lower case in the first place and then match only against that case:
 
 		sMixed := "Never say never."
-		sLower := strings.ToLower(s) // don't forget to import "strings"
+		sLower := strings.ToLower(sMixed) // don't forget to import "strings"
 		r, _ := regexp.Compile(`^n`)
-		fmt.Printf("%v ", r.MatchString(s))      // false, N != n
-		fmt.Printf("%v ", r.MatchString(sLower)) // true,  n == n
+		fmt.Printf("%v ", r.MatchString(sMixed))  // false, N != n
+		fmt.Printf("%v ", r.MatchString(sLower))  // true,  n == n
 
 ## Greedy vs. Non-Greedy ##
 
@@ -106,7 +147,7 @@ As we saw before, regular expressions may contain repetition symbols. In some ca
 
 E.g. given the regexp '.*' (including the quotes), how would this match against:
 
-	'abc','def','ghi'
+    'abc','def','ghi'
 
 You are probably expecting to retrieve *'abc'*. Not so. By default, regular expressions are _greedy_. They will take as many characters as possible to match the regexp. Thus the answer is *'abc','def','ghi'*, because the quotes in between also match the dot "."! Like here:
 
@@ -136,7 +177,7 @@ It is possible to switch back and forth between the two behaviors inside your re
 ## Shall Dot Match Newline? ##
 
 When we have a multiline string (=a string that contains newlines '\n') you can control
-if the '.' matches against the newline character. Default is false. Could someone please provide a sensible use-case?
+if the '.' matches against the newline character using the (?s) flag. Default is false. Could someone please provide a sensible use-case?
 
 		r, _ := regexp.Compile(`a.`)
 		s := "atlanta\narkansas\nalabama\narachnophobia"
@@ -153,7 +194,7 @@ if the '.' matches against the newline character. Default is false. Could someon
 		// ar an as al ab am a
 		// ar ac]>
 
-## Shall ^/$ Match at Newline ##
+## Shall ^/$ Match at a Newline? ##
 
 When we have a multiline string you can control
 if the '^' (BOL=Begin-of-line) or '$' (EOL=End-of-line) matches *at* the newline character with the flag '(?m)'. Default is false.

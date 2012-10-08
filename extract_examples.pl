@@ -44,6 +44,11 @@ while(<>)
 
 $code =~ s/EXAMPLES/$e/;
 
+if ($code =~ /strings\./)
+{
+	$code =~ s/package main\n/package main\nimport "strings"\n/;
+}
+
 print $code;
 
 		

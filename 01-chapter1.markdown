@@ -4,29 +4,29 @@
 
 You want to know if a string matches a regular expression. The *MatchString*-function returns 'true' if the string-argument matches the regular expression that you prepared with *Compile*.
 
-	package main
-	import ( "regexp"
-		     "fmt" )
- 	
-	func main() {
-		r, err := regexp.Compile(`Hello`)
- 	
-		if err != nil {
-			fmt.Printf("There is a problem with you regexp.\n")
-			return
-		}
-
- 		// Will print 'Match'
- 		if r.MatchString("Hello Regular Expression.") == true {
- 			fmt.Printf("Match ")
- 		} else {
- 			fmt.Printf("No match ")
- 		}
- 	}
+    package main
+    import ( "regexp"
+    	     "fmt" )
+     
+    func main() {
+    	r, err := regexp.Compile(`Hello`)
+     
+    	if err != nil {
+    		fmt.Printf("There is a problem with you regexp.\n")
+    		return
+    	}
+    
+     	// Will print 'Match'
+    	if r.MatchString("Hello Regular Expression.") == true {
+     		fmt.Printf("Match ")
+     	} else {
+     		fmt.Printf("No match ")
+    	}
+    }
 
 *Compile* is the heart of the regexp-package. Every regular expression must be prepared with it before use.
 
-The *Compile*-function returns in its second argument an error code. In this tutorial I will usually discard it, because of course all my regexes are perfect ;-). 
+The *Compile*-function returns in its second argument an error code. In this tutorial I will usually discard it, because of course all my regexes are perfect ;-). You might get away with that if your regexps are literals, but if the regexp is derived from user input you definitely want to check the error code.
 
 For the rest of this tutorial the enclosing main function will always be assumed.
 
@@ -72,7 +72,7 @@ Check a filename for validity (Note: Using my definition of valid, see above. Di
 
 ## What's in a Match? ##
 
-The *FindString*-function finds a string. When you use a literal string, the result will obviuosly be the string itself. Only when you start using patterns and classes the result will be more interesting.
+The *FindString*-function finds a string. When you use a literal string, the result will obviously be the string itself. Only when you start using patterns and classes the result will be more interesting.
 
 	r, _ := regexp.Compile(`Hello`)
 	// Will print 'Hello'
@@ -140,13 +140,13 @@ Finding a literal dollar symbol:
 
 The *FindAllString*-function returns an array with all the strings that matched. FindAllString takes two arguments, a string and the maximum number of matches that shall be returned. If you definitely want all matches use '-1'.
 
-Finding words. A word is a set of characters of type \w. The plus symbol '+' signifies a repetition:
+Finding words. A word is a sequence of characters of type \w. The plus symbol '+' signifies a repetition:
 
 	s := "Eenie meenie miny moe."
 	r, _ := regexp.Compile(`\w+`)
-	res := re1.FindAllString(s, -1)
+	res := r.FindAllString(s, -1)
 	// Prints [Eenie meenie miny moe]
-	fmt.Printf("%v", result_slice)
+	fmt.Printf("%v", res)
 
 In contrast to wildcards used on the commandline for filename matching, the '\*' does not symbolize 'any character', but the repetition of the previous character (or group). While the '+' requires at least a single occurence of its preceding symbol, the '*' is also satisfied with 0 occurences. This can lead to strange results.
 
@@ -187,6 +187,14 @@ If you read a text file in INI-style, you might want to be permissive regarding 
 	fmt.Printf("%v", res)
 
 Therefore we allow a number of spaces (including possibly 0) with '\s*':
+
+	s := "Key = Value"
+	r, _ := regexp.Compile(`\w+\s*=\s*\w+`)
+	res := r.FindAllString(s, -1)
+	fmt.Printf("%v", res)
+
+
+The Go-regexp pattern supports a few more patterns constructed with '?'.
 
 ## Anchor and Boundaries ##
 
