@@ -38,7 +38,7 @@ This regular expression will not match:
 
 ## Character classes ##
 
-Character class '\w' represents any character from the class [A-Za-z0-9_], mnemonic: 'word'. Personally I restrict filenames to that class. [Wheeler, filename paper]
+Character class '\w' represents any character from the class [A-Za-z0-9_], mnemonic: 'word'. Personally I restrict filenames to that class. 
 
 	r, _ := regexp.Compile(`H\wllo`)
 	// Will print 'true'. 
@@ -64,7 +64,7 @@ Character classes can be negated by using the uppercase '\D', '\S', '\W'. Thus, 
 	// Will print 'true', obviously there are non-whitespaces here:
 	fmt.Printf("%v", r.MatchString("/home/bill/My Documents"))
 
-Check a filename for validity (Note: Using my definition of valid, see above. Different filesystems/encodings will cause different kinds of problems when you use anything else. Did you know that '\n' is a valid character in filenames according to Posix?)
+Check a filename for validity (Note: Using my definition of valid, see above. Different filesystems/encodings will cause different kinds of problems when you use anything else. Did you know that '\n' is a valid character in filenames according to Posix? [D. Wheeler paper on Posix filenames](http://www.dwheeler.com/essays/fixing-unix-linux-filenames.html).)
 
 	r, _ := regexp.Compile(`\W`) // Not a \w character.
 	// Will print 'false', there are no non-word characters here:
