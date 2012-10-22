@@ -5,9 +5,10 @@
 use strict;
 
 my $i = 0;
-my $in = 0;
 my $e = "";
 my $section = "";
+my $insection = 0;
+my $marker = "\t \t";
 
 my $code = <<EOT;
 package main
@@ -22,23 +23,22 @@ EOT
 
 while(<>)
 {
-	if(m/^\t/ and $section eq '')
+	if(m/$marker/)
 	{
-		$i++;
-		$section .= $_;
-	}
-	elsif(m/^\t/)
-	{
-		$section .= $_;
-	}
-	else
-	{
-		$in = 0;
-		if($section)
+		$insection = ($insection + 1) % 2;
+		if ($insection)
+		{
+			$i++;
+		}
+		else
 		{
 			$e .= "{ // $i \n" . $section . "} // $i \n";
 			$section = '';
 		}
+	}
+	elsif($insection)
+	{
+		$section .= $_;
 	}
 }
 
@@ -50,6 +50,4 @@ if ($code =~ /strings\./)
 }
 
 print $code;
-
-		
 

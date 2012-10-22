@@ -3,7 +3,7 @@
 ## grep ##
 
 The grep-tool searches for (regular) expressions in text files. Every single line is read and if the line matches the pattern provided on the command line, that line is printed.
-
+	 	
 	package main
 
 	import (
@@ -47,7 +47,7 @@ The grep-tool searches for (regular) expressions in text files. Every single lin
 			fmt.Printf("Wrong number of arguments.\n")
 		}
 	}
-
+	 	
 If you don't know what grep does, search 'man grep'.
 
 
@@ -57,7 +57,7 @@ This tool is an improved version of grep. It does not only search for a pattern,
 
 Usage: ./replacer old new filename
 
-
+	 	
 	package main
 
 	import (
@@ -100,14 +100,14 @@ Usage: ./replacer old new filename
 			fmt.Printf("Wrong number of arguments.\n")
 		}
 	}
-
+	 	
 ## Verifying an email-address ##
 
 Interestingly the RFC 2822 which defines the format of email-addresses is pretty permissive.
 That makes it hard to come up with a simple regular expression. In most cases though your 
 application can make some assumptions about addresses and I found this one sufficient for
 all practical purposes:
- 	
+
 	(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})
 
 It must start with a character of the \w class. Then we can have any number of characters including the hyphen, the '.' and the underscore. We want the last character before the @ to be a 'regular' character again. We repeat the same pattern for the domain, only that the suffix (part behind the last dot) can be only 2 or 3 characters. This will cover most cases. If you come across an email address that does not match this regexp it has probably deliberately been setup to annoy you and you can therefore ignore it.
@@ -130,7 +130,7 @@ enters a "," for amounts bigger than 999? For simplicity we will make the
 following assumptions: There is _no_ space between the dollar sign and the 
 number. There can be no comma and the dot is the only accepted separator.
 (Good-bye, i18n).
-
+	 	
 	package main
 
 	import (
@@ -152,7 +152,7 @@ number. There can be no comma and the dot is the only accepted separator.
 	    }
 	    defer fh.Close()
 
-	    buf := make([]byte, 1024)
+	    buf := make([]byte, 1024) // Hah, magic number!
 	    for {
 			buf, _ , err = f.ReadLine()
 			if err != nil {
@@ -176,4 +176,5 @@ number. There can be no comma and the dot is the only accepted separator.
 			fmt.Printf("Wrong number of arguments.\n")
 		}
 	}
+	 	
 
