@@ -93,10 +93,12 @@ FindString returns after the first match. If you are interested in more possible
 
 The dot '.' matches any character. 
 	 	
-	// Will print 'cat'. (Leftmost match).
+	// Will print 'cat'.
 	r, _ := regexp.Compile(`.at`)
 	fmt.Printf(r.FindString("The cat sat on the mat."))
-
+	 	
+'cat' was the first match.
+	 	
 	// more dot.
 	s:= "Nobody expects the Spanish inquisition."
 	//          -- --     --
@@ -182,7 +184,11 @@ If you read a text file in INI-style, you might want to be permissive regarding 
 	res := r.FindAllString(s, -1)
 	// OK, prints Key=Value
 	fmt.Printf("%v", res)
+	 	
 
+Now  let's add some spaces around the equal sign.
+
+	 	
 	s := "Key = Value"
 	r, _ := regexp.Compile(`\w+=\w+`)
 	res := r.FindAllString(s, -1)
