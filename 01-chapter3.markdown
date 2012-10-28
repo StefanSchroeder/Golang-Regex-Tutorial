@@ -114,6 +114,8 @@ It must start with a character of the \w class. Then we can have any number of c
 
 ## Reading a bill ##
 
+INCOMPLETE
+
 Say you have a text file with the following layout:
 
 	Item 1: $10

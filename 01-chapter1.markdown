@@ -1,31 +1,33 @@
 # Part 1: The basics #
 
+by Stefan Schroeder
+
 ## Simple Matching ##
 
 You want to know if a string matches a regular expression. The *MatchString*-function returns 'true' if the string-argument matches the regular expression that you prepared with *Compile*.
 
-package main
+	package main
 
-import (
-	"fmt"
-	"regexp"
-)
+	import (
+		"fmt"
+		"regexp"
+	)
 
-func main() {
-	r, err := regexp.Compile(`Hello`)
+	func main() {
+		r, err := regexp.Compile(`Hello`)
 
-	if err != nil {
-		fmt.Printf("There is a problem with you regexp.\n")
-		return
+		if err != nil {
+			fmt.Printf("There is a problem with you regexp.\n")
+			return
+		}
+
+		// Will print 'Match'
+		if r.MatchString("Hello Regular Expression.") == true {
+			fmt.Printf("Match ")
+		} else {
+			fmt.Printf("No match ")
+		}
 	}
-
-	// Will print 'Match'
-	if r.MatchString("Hello Regular Expression.") == true {
-		fmt.Printf("Match ")
-	} else {
-		fmt.Printf("No match ")
-	}
-}
 
 *Compile* is the heart of the regexp-package. Every regular expression must be prepared with it before use.
 
