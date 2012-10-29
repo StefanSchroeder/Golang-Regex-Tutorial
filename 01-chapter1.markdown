@@ -31,7 +31,7 @@ You want to know if a string matches a regular expression. The *MatchString*-fun
 
 *Compile* is the heart of the regexp-package. Every regular expression must be prepared with it before use.
 
-The *Compile*-function returns in its second argument an error code. In this tutorial I will usually discard it, because of course all my regexes are perfect ;-). You might get away with that if your regexps are literals, but if the regexp is derived from input at runtime you definitely want to check the error code.
+The *Compile*-function returns in its second argument an error value. In this tutorial I will usually discard it, because of course all my regexes are perfect ;-). You might get away with that if your regexps are literals, but if the regexp is derived from input at runtime you definitely want to check the error value.
 
 For the rest of this tutorial the enclosing main function will always be assumed.
 
