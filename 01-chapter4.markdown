@@ -5,7 +5,7 @@
 If literal strings separate the fields in your input you don't need to use regexps.
 	 	
 		s := "abc,def,ghi"
-		r, _ := regexp.Compile(`[^,]+`) // everything that is not a comma
+		r, err := regexp.Compile(`[^,]+`) // everything that is not a comma
 		res:= r.FindAllString(s, -1)
 		// Prints [abc def ghi] 
 		fmt.Printf("%v", res)
@@ -26,7 +26,7 @@ The MatchString-function allows you to find a literal string in another string.
 
 	 	
 		s := "OttoFritzHermanWaldoKarlSiegfried"
-		r, _ := regexp.Compile(`Waldo`)
+		r, err := regexp.Compile(`Waldo`)
 		res:= r.MatchString(s)
 		// Prints true 
 		fmt.Printf("%v", res)
@@ -49,7 +49,7 @@ You could use regexps to accomplish that:
 
 	 	
 		s := "  Institute of Experimental Computer Science  "
-		r, _ := regexp.Compile(`\s*(.*)\s*`)
+		r, err := regexp.Compile(`\s*(.*)\s*`)
 		res:= r.FindStringSubmatch(s)
 		// <Institute of Experimental Computer Science  >
 		fmt.Printf("<%v>", res[1])

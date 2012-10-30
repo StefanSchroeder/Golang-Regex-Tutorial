@@ -5,14 +5,14 @@
 Sometimes you want to match against a string, but want to peek at a particular slice only. In the previous chapter we always looked at the *entire* matching string.
 	 	
 		//[[cat] [sat] [mat]]
-		re, _ := regexp.Compile(`.at`)
+		re, err := regexp.Compile(`.at`)
 		res := re.FindAllStringSubmatch("The cat sat on the mat.", -1)
 		fmt.Printf("%v", res)
 	 	
 Parentheses allow to capture that piece of the string that you are actually interested in, instead of the entire regex.
 	 	
 		//[[cat c] [sat s] [mat m]]
-		re, _ := regexp.Compile(`(.)at`) // want to know what is in front of 'at'
+		re, err := regexp.Compile(`(.)at`) // want to know what is in front of 'at'
 		res := re.FindAllStringSubmatch("The cat sat on the mat.", -1)
 		fmt.Printf("%v", res)
 	 	
@@ -20,7 +20,7 @@ You can have more than one group.
 	 	
 		// Prints [[ex e x] [ec e c] [e  e  ]]
 		s := "Nobody expects the Spanish inquisition."
-		re1, _ := regexp.Compile(`(e)(.)`) // Prepare our regex
+		re1, err := regexp.Compile(`(e)(.)`) // Prepare our regex
 		result_slice := re1.FindAllStringSubmatch(s, -1)
 		fmt.Printf("%v", result_slice)
 	 	
@@ -29,7 +29,7 @@ The *FindAllStringSubmatch*-function will, for each match, return an array with 
 If you have an optional group that does not appear in the string, the resulting array will have an empty string in its cell, in other words, the number of fields in the resulting array always matches the number of groups plus one.
 	 	
 	s := "Mr. Leonard Spock"
-	re1, _ := regexp.Compile(`(Mr)(s)?\. (\w+) (\w+)`)
+	re1, err := regexp.Compile(`(Mr)(s)?\. (\w+) (\w+)`)
 	result:= re1.FindStringSubmatch(s)
 	
 	for k, v := range result {
@@ -45,7 +45,7 @@ If you have an optional group that does not appear in the string, the resulting 
 You cannot have partially overlapping groups. If we wanted the first regexp to match 'expects the' and the other to match 'the Spanish', the parentheses would be interpreted differently. Motto is: Last opened, first closed. The parentheses that is opened for 'the' is closed after 'the'.   
 	 	
 	s := "Nobody expects the Spanish inquisition."
-	re1, _ := regexp.Compile(`(expects (...) Spanish)`)
+	re1, err := regexp.Compile(`(expects (...) Spanish)`)
 	// Wanted regex1          --------------
 	// Wanted regex2                   --------------
 	result:= re1.FindStringSubmatch(s)
@@ -66,7 +66,7 @@ If a complex regular expressions has several groups you might arrive at a situat
 Without a non-capturing group:
 	 	
 	s := "Mrs. Leonora Spock"
-	re1, _ := regexp.Compile(`Mr(s)?\. (\w+) (\w+)`)
+	re1, err := regexp.Compile(`Mr(s)?\. (\w+) (\w+)`)
 	result:= re1.FindStringSubmatch(s)
 	for k, v := range result {
 		fmt.Printf("%d. %s\n", k, v)
@@ -79,7 +79,7 @@ Without a non-capturing group:
 With a non-capturing group:
 	 	
 	s := "Mrs. Leonora Spock"
-	re1, _ := regexp.Compile(`Mr(?:s)?\. (\w+) (\w+)`)
+	re1, err := regexp.Compile(`Mr(?:s)?\. (\w+) (\w+)`)
 	result:= re1.FindStringSubmatch(s)
 	for k, v := range result {
 		fmt.Printf("%d. %s\n", k, v)
@@ -93,7 +93,7 @@ With a non-capturing group:
 The number of required repetitions might be well known. If you know how many instances you need of parts of your regexp we will need {}.
 	 	
 	s := "11110010101111100101001001110101"
-	re1, _ := regexp.Compile(`1{4}`)
+	re1, err := regexp.Compile(`1{4}`)
 	res := re1.FindAllStringSubmatch(s,-1)
 	fmt.Printf("<%v>", res)
 	// <[[1111] [1111]]>
@@ -131,14 +131,14 @@ You might already know that some characters exist in two cases: Upper and lower.
 If you explicitly want to ignore the case, in other words, if you want to permit both cases for a regexp or a part of it, you use the 'i' flag.
 	 	
 		s := "Never say never."
-		r, _ := regexp.Compile(`(?i)^n`)     // Do we have an 'N' or 'n' at the beginning?
+		r, err := regexp.Compile(`(?i)^n`)     // Do we have an 'N' or 'n' at the beginning?
 		fmt.Printf("%v", r.MatchString(s)) // true, case insensitive
 	 	
 Matching against a case-insensitive regexp is rarely done is the real world. Usually we prefer to convert the entire string to either upper or lower case in the first place and then match only against that case:
 	 	
 		sMixed := "Never say never."
 		sLower := strings.ToLower(sMixed) // don't forget to import "strings"
-		r, _ := regexp.Compile(`^n`)
+		r, err := regexp.Compile(`^n`)
 		fmt.Printf("%v ", r.MatchString(sMixed))  // false, N != n
 		fmt.Printf("%v ", r.MatchString(sLower))  // true,  n == n
 	 	
@@ -152,14 +152,14 @@ E.g. given the regexp '.*' (including the quotes), how would this match against:
 
 You are probably expecting to retrieve *'abc'*. Not so. By default, regular expressions are _greedy_. They will take as many characters as possible to match the regexp. Thus the answer is *'abc','def','ghi'*, because the quotes in between also match the dot "."! Like here:
 	 	
-		r, _ := regexp.Compile(`'.*'`)
+		r, err := regexp.Compile(`'.*'`)
 		res := r.FindString(" 'abc','def','ghi' ")
 		fmt.Printf("<%v>", res)
 		// Will print: <'abc','def','ghi'>
 	 	
 To identify the shortest possible match (=non-greedy) you add the special chracter '?' to your regular expression.
 	 	
-		r, _ := regexp.Compile(`'.*?'`)
+		r, err := regexp.Compile(`'.*?'`)
 		res := r.FindString(" 'abc','def','ghi' ")
 		fmt.Printf("<%v>", res)
 		// Will print: <'abc'>
@@ -168,7 +168,7 @@ There is no easy way that would allow you to specify a regexp that would match '
 
 You can revert the behavior of the regular expression to make being non-greedy the default with the flag U
 	 	
-		r, _ := regexp.Compile(`(?U)'.*'`)
+		r, err := regexp.Compile(`(?U)'.*'`)
 		res := r.FindString(" 'abc','def','ghi' ")
 		fmt.Printf("<%v>", res)
 		// Will print: <'abc'>
@@ -180,7 +180,7 @@ It is possible to switch back and forth between the two behaviors inside your re
 When we have a multiline string (=a string that contains newlines '\n') you can control
 if the '.' matches against the newline character using the (?s) flag. Default is false. Could someone please provide a sensible use-case?
 	 	
-		r, _ := regexp.Compile(`a.`)
+		r, err := regexp.Compile(`a.`)
 		s := "atlanta\narkansas\nalabama\narachnophobia"
 		res := r.FindAllString(s, -1)
 		fmt.Printf("<%v>", res)
@@ -188,7 +188,7 @@ if the '.' matches against the newline character using the (?s) flag. Default is
 	 	
 Now using the the (?s) flag, the newline is kept in the result.
 	 	
-		r, _ := regexp.Compile(`(?s)a.`)
+		r, err := regexp.Compile(`(?s)a.`)
 		s := "atlanta\narkansas\nalabama\narachnophobia"
 		res := r.FindAllString(s, -1)
 		fmt.Printf("<%v>", res)
@@ -202,7 +202,7 @@ Now using the the (?s) flag, the newline is kept in the result.
 When we have a multiline string you can control
 if the '^' (BOL=Begin-of-line) or '$' (EOL=End-of-line) matches *at* the newline character with the flag '(?m)'. Default is false.
 	 	
-		r, _ := regexp.Compile(`a$`) // without flag
+		r, err1 := regexp.Compile(`a$`) // without flag
 		s := "atlanta\narkansas\nalabama\narachnophobia"
 		//    01234567 890123456 78901234 5678901234567
 		//                                            -
@@ -211,7 +211,7 @@ if the '^' (BOL=Begin-of-line) or '$' (EOL=End-of-line) matches *at* the newline
 		// 1 match
 		// <[[37 38]]>
 		
-		t, _ := regexp.Compile(`(?m)a$`) // with flag
+		t, err2 := regexp.Compile(`(?m)a$`) // with flag
 		u := "atlanta\narkansas\nalabama\narachnophobia"
 		//    01234567 890123456 78901234 5678901234567
 		//          --                 --             -

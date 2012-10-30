@@ -15,7 +15,7 @@ The grep-tool searches for (regular) expressions in text files. Every single lin
 	)
 
 	func grep(re, filename string) {
-	    regex, _ := regexp.Compile(re)
+	    regex, err := regexp.Compile(re)
 
 	    fh, err := os.Open(filename)
 	    f := bufio.NewReader(fh)
@@ -69,7 +69,7 @@ Usage: ./replacer old new filename
 	)
 
 	func replace(re, repl, filename string) {
-	    regex, _ := regexp.Compile(re)
+	    regex, err := regexp.Compile(re)
 
 	    fh, err := os.Open(filename)
 	    f := bufio.NewReader(fh)
