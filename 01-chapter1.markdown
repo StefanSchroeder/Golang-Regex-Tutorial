@@ -71,6 +71,7 @@ Character classes can be negated by using the uppercase '\D', '\S', '\W'. Thus, 
 	 	
 Check a filename for validity (Note: Using my definition of valid, see above. Different filesystems/encodings will cause different kinds of problems when you use anything else. Did you know that '\n' is a valid character in filenames according to Posix? [D. Wheeler paper on Posix filenames](http://www.dwheeler.com/essays/fixing-unix-linux-filenames.html).)
 	 	
+	// FIXME This is nonsense.
 	r, err := regexp.Compile(`\W`) // Not a \w character.
 	// Will print 'false', there are no non-word characters here:
 	fmt.Printf("%v", r.MatchString("my_extraordinary_but_valid_filename.txt"))
