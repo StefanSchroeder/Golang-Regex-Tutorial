@@ -1,3 +1,6 @@
+no:
+	echo This is not the Makefile you were looking for.
+
 all:
 	perl extract_examples.pl 01-chapter1.markdown > r1.go
 	perl extract_examples.pl 01-chapter2.markdown > r2.go
