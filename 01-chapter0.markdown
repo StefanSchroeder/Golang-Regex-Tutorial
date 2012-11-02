@@ -22,11 +22,20 @@ In the first version I am going to cover only functions from the regexp-package 
 
 [Russ Cox' entry page for things regular expressions](http://swtch.com/~rsc/regexp/)
 
+Mark McGranaghan set up a nice website with Go examples. There is also a 
+[page on regular expressions](https://gobyexample.com/regular-expressions)
+
+Rob Pike has more to say about [Regular expressions in lexing and parsing](http://commandcenter.blogspot.ch/2011/08/regular-expressions-in-lexing-and.html).
+
+If you have a Go related problem that you cannot solve alone, you want to go to
+[Golang-Nuts mailing list](http://www.groups.google.com/group/golang-nuts). 
+But you probably already knew that.
+
 [Perl regexp tutorial](http://perldoc.perl.org/perlretut.html) For inspiration.
 
 > Version 0.1 Initial.
 
-This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.
+> This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.
 
 Written by Stefan Schroeder.
 

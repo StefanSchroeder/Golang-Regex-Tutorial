@@ -1,7 +1,5 @@
 # Part 1: The basics #
 
-by Stefan Schroeder
-
 ## Simple Matching ##
 
 You want to know if a string matches a regular expression. The *MatchString*-function returns 'true' if the string-argument matches the regular expression that you prepared with *Compile*.
