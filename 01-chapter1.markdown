@@ -297,10 +297,21 @@ aliases for frequently used classes that are given are more readable name. The c
 	[:word:]	word characters (≡ [0-9A-Za-z_])
 	[:xdigit:]	hex digit (≡ [0-9A-Fa-f])
 
-Note that you have to wrap an ASCII character class in []. Furthmore note that whenever we speack about alphabet we are only
+Note that you have to wrap an ASCII character class in []. Furthmore note that whenever we speak about alphabet we are only
 talking about the 26 letters in ASCII range 65-90, not including letters with diacritical marks.
 
-TODO: Examples.
+Example: Find a sequence of a lower case letter, a punctuation character, a space (blank) and a digit:
+
+	r, err := regexp.Compile(`[[:lower:]][[:punct:]][[:blank:]][[:digit:]]`)
+	if r.MatchString("Fred: 12345769") == true {
+		                 ----
+		fmt.Printf("Match ") // 
+	} else {
+		fmt.Printf("No match ")
+	}
+
+I never use those, because they require more typing, but they might actually be a good idea in 
+projects with many developers where not everybody is as well versed in regular expressions as you are.
 
 ## Alternatives ##
 
