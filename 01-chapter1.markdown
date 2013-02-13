@@ -276,6 +276,32 @@ A negated character class reverses the match of the class. In this case it Will 
 	fmt.Printf("%v ", r.MatchString("Hallo")) // true
 	fmt.Printf("%v ", r.MatchString("H9llo")) // true
 	 	
+## POSIX character classes ## 
+
+The Golang regexp library implements the POSIX character classes. These are simply
+aliases for frequently used classes that are given are more readable name. The classes are:
+(https://re2.googlecode.com/hg/doc/syntax.html)
+
+	[:alnum:]	alphanumeric (≡ [0-9A-Za-z])
+	[:alpha:]	alphabetic (≡ [A-Za-z])
+	[:ascii:]	ASCII (≡ [\x00-\x7F])
+	[:blank:]	blank (≡ [\t ])
+	[:cntrl:]	control (≡ [\x00-\x1F\x7F])
+	[:digit:]	digits (≡ [0-9])
+	[:graph:]	graphical (≡ [!-~] == [A-Za-z0-9!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~])
+	[:lower:]	lower case (≡ [a-z])
+	[:print:]	printable (≡ [ -~] == [ [:graph:]])
+	[:punct:]	punctuation (≡ [!-/:-@[-`{-~])
+	[:space:]	whitespace (≡ [\t\n\v\f\r ])
+	[:upper:]	upper case (≡ [A-Z])
+	[:word:]	word characters (≡ [0-9A-Za-z_])
+	[:xdigit:]	hex digit (≡ [0-9A-Fa-f])
+
+Note that you have to wrap an ASCII character class in []. Furthmore note that whenever we speack about alphabet we are only
+talking about the 26 letters in ASCII range 65-90, not including letters with diacritical marks.
+
+TODO: Examples.
+
 ## Alternatives ##
 
 You can provide alternatives using the pipe-symbol '|' to allow two (or more) different possible matches. If you want to allow alternatives only in parts of the regular expression, you can use parentheses for grouping.
