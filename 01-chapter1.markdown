@@ -276,7 +276,7 @@ A negated character class reverses the match of the class. In this case it Will 
 	fmt.Printf("%v ", r.MatchString("Hallo")) // true
 	fmt.Printf("%v ", r.MatchString("H9llo")) // true
 	 	
-## POSIX character classes ## 
+## POSIX character classes
 
 The Golang regexp library implements the POSIX character classes. These are simply
 aliases for frequently used classes that are given are more readable name. The classes are:
