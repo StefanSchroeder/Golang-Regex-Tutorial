@@ -317,7 +317,8 @@ projects with many developers where not everybody is as well versed in regular e
 
 Unicode is organized in blocks, typically grouped by topic or language. In this chapter
 I give some examples, because it's next to impossible to cover all of them (and it doesn't 
-really help).
+really help). Refer to [complete unicode list of the
+re2 engine](https://code.google.com/p/re2/wiki/Syntax "unicode blocks of re2").
 
 ### Example: Greek ###
 
@@ -354,7 +355,8 @@ probably Coptic, so be careful.
 	
 ### Example: Braille ###
 	
-You have to use a font that supports Braille.
+You have to use a font that supports [Braille](http://en.wikipedia.org/wiki/Braille "Braille").
+I have my doubts that this is uesful unless combined with a Braille capable printer, but there you go.
 
 	r2, err := regexp.Compile(`\p{Braille}`)
 	if r2.MatchString("This is all ⢓⢔⢕⢖⢗⢘⢙⢚⢛ to me.") == true {
@@ -366,6 +368,7 @@ You have to use a font that supports Braille.
 ### Example: Cherokee ###
 
 You have to use a font that supports Cherokee (e.g. Code2000).
+The story of the Cherokee script is definitely worth [reading about](http://en.wikipedia.org/wiki/Cherokee#Language_and_writing_system "Cherokee").
 
 	r3, err := regexp.Compile(`\p{Cherokee}`)
 	if r3.MatchString("This is all ᏯᏰᏱᏲᏳᏴ to me.") == true {
