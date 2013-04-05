@@ -313,6 +313,67 @@ Example: Find a sequence of a lower case letter, a punctuation character, a spac
 I never use those, because they require more typing, but they might actually be a good idea in 
 projects with many developers where not everybody is as well versed in regular expressions as you are.
 
+## Unicode Classes ##
+
+Unicode is organized in blocks, typically grouped by topic or language. In this chapter
+I give some examples, because it's next to impossible to cover all of them (and it doesn't 
+really help).
+
+### Example: Greek ###
+
+We start with a simple example from the Greek code block.
+
+	r, err := regexp.Compile(`\p{Greek}`)
+
+	if r.MatchString("This is all Γςεεκ to me.") == true {
+		fmt.Printf("Match ") // Will print 'Match'
+	} else {
+ 		fmt.Printf("No match ")
+	}
+	
+On the Windows-1252 codepage there is a mu, but it
+doesn't qualify, because \p{Greek} covers only 
+http://en.wikipedia.org/wiki/Greek_and_Coptic
+the range U+0370..U+03FF.
+
+	if r.MatchString("the µ is right before ¶") == true {
+		fmt.Printf("Match ") 
+	} else {
+ 		fmt.Printf("No match ") // Will print 'No match'
+	}
+
+Some extra cool letters from the Greek and Coptic
+codepage that qualify as 'Greek' although they are
+probably Coptic, so be careful.
+
+	if r.MatchString("ϵ϶ϓϔϕϖϗϘϙϚϛϜ") == true {
+		fmt.Printf("Match ") // Will print 'Match'
+	} else {
+		fmt.Printf("No match ") 
+	}
+	
+### Example: Braille ###
+	
+You have to use a font that supports Braille.
+
+	r2, err := regexp.Compile(`\p{Braille}`)
+	if r2.MatchString("This is all ⢓⢔⢕⢖⢗⢘⢙⢚⢛ to me.") == true {
+		fmt.Printf("Match ") // Will print 'Match'
+	} else {
+		fmt.Printf("No match ")
+	}
+
+### Example: Cherokee ###
+
+You have to use a font that supports Cherokee (e.g. Code2000).
+
+	r3, err := regexp.Compile(`\p{Cherokee}`)
+	if r3.MatchString("This is all ᏯᏰᏱᏲᏳᏴ to me.") == true {
+		fmt.Printf("Match ") // Will print 'Match'
+	} else {
+		fmt.Printf("No match ")
+	}
+
 ## Alternatives ##
 
 You can provide alternatives using the pipe-symbol '|' to allow two (or more) different possible matches. If you want to allow alternatives only in parts of the regular expression, you can use parentheses for grouping.
