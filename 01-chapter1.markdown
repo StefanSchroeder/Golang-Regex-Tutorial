@@ -356,7 +356,7 @@ probably Coptic, so be careful.
 ### Example: Braille ###
 	
 You have to use a font that supports [Braille](http://en.wikipedia.org/wiki/Braille "Braille").
-I have my doubts that this is uesful unless combined with a Braille capable printer, but there you go.
+I have my doubts that this is useful unless combined with a Braille capable printer, but there you go.
 
 	r2, err := regexp.Compile(`\p{Braille}`)
 	if r2.MatchString("This is all ⢓⢔⢕⢖⢗⢘⢙⢚⢛ to me.") == true {
