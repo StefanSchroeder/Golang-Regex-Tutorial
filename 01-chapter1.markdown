@@ -20,7 +20,7 @@ You want to know if a string matches a regular expression. The *MatchString*-fun
 		}
 
 		// Will print 'Match'
-		if r.MatchString("Hello Regular Expression.") == true {
+		if r.MatchString("Hello Regular Expression.") {
 			fmt.Printf("Match ")
 		} else {
 			fmt.Printf("No match ")
@@ -116,7 +116,7 @@ The dot '.' matches any character.
 Finding one backslash '\': It must be escaped twice in the regex and once in the string.
 	 	
 	r, err := regexp.Compile(`C:\\\\`)
-	if r.MatchString("Working on drive C:\\") == true {
+	if r.MatchString("Working on drive C:\\") {
 		fmt.Printf("Matches.") // <---
 	} else {
 		fmt.Printf("No match.")
@@ -125,7 +125,7 @@ Finding one backslash '\': It must be escaped twice in the regex and once in the
 Finding a literal dot:
 	 	
 	r, err := regexp.Compile(`\.`)
-	if r.MatchString("Short.") == true {
+	if r.MatchString("Short.") {
 		fmt.Printf("Has a dot.") // <---
 	} else {
 		fmt.Printf("Has no dot.")
@@ -303,7 +303,7 @@ talking about the 26 letters in ASCII range 65-90, not including letters with di
 Example: Find a sequence of a lower case letter, a punctuation character, a space (blank) and a digit:
 
 	r, err := regexp.Compile(`[[:lower:]][[:punct:]][[:blank:]][[:digit:]]`)
-	if r.MatchString("Fred: 12345769") == true {
+	if r.MatchString("Fred: 12345769") {
 		                 ----
 		fmt.Printf("Match ") // 
 	} else {
@@ -326,7 +326,7 @@ We start with a simple example from the Greek code block.
 
 	r, err := regexp.Compile(`\p{Greek}`)
 
-	if r.MatchString("This is all Γςεεκ to me.") == true {
+	if r.MatchString("This is all Γςεεκ to me.") {
 		fmt.Printf("Match ") // Will print 'Match'
 	} else {
  		fmt.Printf("No match ")
@@ -337,7 +337,7 @@ doesn't qualify, because \p{Greek} covers only
 http://en.wikipedia.org/wiki/Greek_and_Coptic
 the range U+0370..U+03FF.
 
-	if r.MatchString("the µ is right before ¶") == true {
+	if r.MatchString("the µ is right before ¶") {
 		fmt.Printf("Match ") 
 	} else {
  		fmt.Printf("No match ") // Will print 'No match'
@@ -347,7 +347,7 @@ Some extra cool letters from the Greek and Coptic
 codepage that qualify as 'Greek' although they are
 probably Coptic, so be careful.
 
-	if r.MatchString("ϵ϶ϓϔϕϖϗϘϙϚϛϜ") == true {
+	if r.MatchString("ϵ϶ϓϔϕϖϗϘϙϚϛϜ") {
 		fmt.Printf("Match ") // Will print 'Match'
 	} else {
 		fmt.Printf("No match ") 
@@ -359,7 +359,7 @@ You have to use a font that supports [Braille](http://en.wikipedia.org/wiki/Brai
 I have my doubts that this is useful unless combined with a Braille capable printer, but there you go.
 
 	r2, err := regexp.Compile(`\p{Braille}`)
-	if r2.MatchString("This is all ⢓⢔⢕⢖⢗⢘⢙⢚⢛ to me.") == true {
+	if r2.MatchString("This is all ⢓⢔⢕⢖⢗⢘⢙⢚⢛ to me.") {
 		fmt.Printf("Match ") // Will print 'Match'
 	} else {
 		fmt.Printf("No match ")
@@ -371,7 +371,7 @@ You have to use a font that supports Cherokee (e.g. Code2000).
 The story of the Cherokee script is definitely worth [reading about](http://en.wikipedia.org/wiki/Cherokee#Language_and_writing_system "Cherokee").
 
 	r3, err := regexp.Compile(`\p{Cherokee}`)
-	if r3.MatchString("This is all ᏯᏰᏱᏲᏳᏴ to me.") == true {
+	if r3.MatchString("This is all ᏯᏰᏱᏲᏳᏴ to me.") {
 		fmt.Printf("Match ") // Will print 'Match'
 	} else {
 		fmt.Printf("No match ")
