@@ -6,13 +6,13 @@ The text was written in Markdown.
 
 In the first version I am going to cover only functions from the regexp-package that deal with strings, because I feel that this is the most common use. The regexp-package has some forty functions; make sure you read the package documentation.
 
-[Part 1: The Basics](01-chapter1.html): The basics of using regular expressions.
+[Part 1: The Basics](01-chapter1.markdown): The basics of using regular expressions.
 
-[Part 2: Advanced](01-chapter2.html): More sophisticated regular expressions.
+[Part 2: Advanced](01-chapter2.markdown): More sophisticated regular expressions.
 
-[Part 3: Cookbook](01-chapter3.html): A few examples programs.
+[Part 3: Cookbook](01-chapter3.markdown): A few examples programs.
 
-[Part 4: Alternatives](01-chapter4.html): When regexps are not the right solution.
+[Part 4: Alternatives](01-chapter4.markdown): When regexps are not the right solution.
 
 *References:*
 
@@ -28,7 +28,7 @@ Mark McGranaghan set up a nice website with Go examples. There is also a
 Rob Pike has more to say about [Regular expressions in lexing and parsing](http://commandcenter.blogspot.ch/2011/08/regular-expressions-in-lexing-and.html).
 
 If you have a Go related problem that you cannot solve alone, you want to go to
-[Golang-Nuts mailing list](http://www.groups.google.com/group/golang-nuts). 
+[Golang-Nuts mailing list](https://groups.google.com/group/golang-nuts). 
 But you probably already knew that.
 
 [Perl regexp tutorial](http://perldoc.perl.org/perlretut.html) For inspiration.
