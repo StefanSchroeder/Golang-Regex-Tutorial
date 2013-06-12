@@ -27,9 +27,41 @@ You want to know if a string matches a regular expression. The *MatchString*-fun
 		}
 	}
 
-*Compile* is the heart of the regexp-package. Every regular expression must be prepared with it before use.
-That's not exactly true, though. Alternatively you may use the *MustCompile*-function which behaves
-almost like Compile, but it throws a panic, if the regular expression cannot be compiled.
+*Compile* is the heart of the regexp-package. Every regular expression must be prepared with it before use using either Compile or
+it sister-function *MustCompile*. The *MustCompile*-function behaves
+almost like Compile, but throws a panic, if the regular expression cannot be compiled. Because any 
+error in *MustCompile* leads to a panic, there no need for returning an error code as second return value.
+This makes it easier to chain the MustCompile call with the match-function of your choice, like shown here:
+(But you should avoid the repeated compilation of a regular expression in a loop for performance reasons.)
+
+	package main
+
+	import (
+		"fmt"
+		"regexp"
+	)
+
+	func main() {
+		if regexp.MustCompile(`Hello`).MatchString("Hello Regular Expression.") == true {
+			fmt.Printf("Match ") // Will print 'Match' again
+		} else {
+			fmt.Printf("No match ")
+		}
+	}
+
+
+The following illegal regexp
+
+		var myre = regexp.MustCompile(`\d(+`)
+
+will yield
+
+	panic: regexp: Compile(`\d(+`): error parsing regexp: missing argument to repetition operator: `+`
+
+	goroutine 1 [running]:
+	regexp.MustCompile(0x4de620, 0x4, 0x4148e8)
+		go/src/pkg/regexp/regexp.go:207 +0x13f
+
 
 The *Compile*-function returns in its second argument an error value. In this tutorial I will usually discard it, because of course all my regexes are perfect ;-). You might get away with that if your regexps are literals, but if the regexp is derived from input at runtime you definitely want to check the error value.
 
