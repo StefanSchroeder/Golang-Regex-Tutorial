@@ -57,7 +57,7 @@ You cannot have partially overlapping groups. If we wanted the first regexp to m
 	// 1. expects the Spanish
 	// 2. the
 
-## Names matches ##
+## Named matches ##
 
 To be written.
 
