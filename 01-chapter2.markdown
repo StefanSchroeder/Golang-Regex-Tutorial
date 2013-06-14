@@ -57,6 +57,8 @@ You cannot have partially overlapping groups. If we wanted the first regexp to m
 	// 1. expects the Spanish
 	// 2. the
 
+The *FindStringSubmatchIndex*-function ...
+
 ## Named matches ##
 
 To be written.
