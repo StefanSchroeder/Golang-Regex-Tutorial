@@ -75,7 +75,7 @@ This regular expression will not match:
 	 	
 ## Character classes ##
 
-Character class '\w' represents any character from the class [A-Za-z0-9_], mnemonic: 'word'. Personally I restrict filenames to that class. 
+Character class '\w' represents any character from the class [A-Za-z0-9_], mnemonic: 'word'.
 	 	
 	r, err := regexp.Compile(`H\wllo`)
 	// Will print 'true'. 
