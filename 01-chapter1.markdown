@@ -27,11 +27,11 @@ You want to know if a string matches a regular expression. The *MatchString*-fun
 		}
 	}
 
-*Compile* is the heart of the regexp-package. Every regular expression must be prepared with it before use using either Compile or
-it sister-function *MustCompile*. The *MustCompile*-function behaves
-almost like Compile, but throws a panic, if the regular expression cannot be compiled. Because any 
+*Compile* is the heart of the regexp-package. Every regular expression must be prepared with *Compile* or
+its sister-function *MustCompile*. The *MustCompile*-function behaves
+almost like *Compile*, but throws a panic if the regular expression cannot be compiled. Because any 
 error in *MustCompile* leads to a panic, there no need for returning an error code as second return value.
-This makes it easier to chain the MustCompile call with the match-function of your choice, like shown here:
+This makes it easier to chain the *MustCompile* call with the match-function of your choice, like shown here:
 (But you should avoid the repeated compilation of a regular expression in a loop for performance reasons.)
 
 	package main
