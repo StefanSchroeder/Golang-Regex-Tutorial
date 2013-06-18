@@ -16,6 +16,9 @@ The grep-tool searches for (regular) expressions in text files. Every single lin
 
 	func grep(re, filename string) {
 	    regex, err := regexp.Compile(re)
+	    if err != nil {
+			return // there was a problem with the regular expression.
+	    }
 
 	    fh, err := os.Open(filename)
 	    f := bufio.NewReader(fh)
@@ -70,6 +73,9 @@ Usage: ./replacer old new filename
 
 	func replace(re, repl, filename string) {
 	    regex, err := regexp.Compile(re)
+	    if err != nil {
+			return // there was a problem with the regular expression.
+	    }
 
 	    fh, err := os.Open(filename)
 	    f := bufio.NewReader(fh)
@@ -104,11 +110,17 @@ Usage: ./replacer old new filename
 ## Verifying an email-address ##
 
 Interestingly the RFC 2822 which defines the format of email-addresses is pretty permissive.
-That makes it hard to come up with a simple regular expression. In most cases though your 
+That makes it hard to come up with a simple regular expression that matches a valid
+email address. In most cases though your 
 application can make some assumptions about addresses and I found this one sufficient for
 all practical purposes:
 
 	(\w[-._\w]*\w@\w[-._\w]*\w\.\w{2,3})
 
-It must start with a character of the \w class. Then we can have any number of characters including the hyphen, the '.' and the underscore. We want the last character before the @ to be a 'regular' character again. We repeat the same pattern for the domain, only that the suffix (part behind the last dot) can be only 2 or 3 characters. This will cover most cases. If you come across an email address that does not match this regexp it has probably deliberately been setup to annoy you and you can therefore ignore it.
+It must start with a character of the \w class. Then we can have any number of characters 
+including the hyphen, the '.' and the underscore. We want the last character before the @ to 
+be a 'regular' character again. We repeat the same pattern for the domain, only that the 
+suffix (part behind the last dot) can be only 2 or 3 characters. This will cover most cases. 
+If you come across an email address that does not match this regexp it has probably deliberately 
+been setup to annoy you and you can therefore ignore it.
 
