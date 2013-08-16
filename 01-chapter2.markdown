@@ -163,7 +163,7 @@ You are probably expecting to retrieve *'abc'*. Not so. By default, regular expr
 		fmt.Printf("<%v>", res)
 		// Will print: <'abc','def','ghi'>
 	 	
-To identify the shortest possible match (=non-greedy) you add the special chracter '?' to your regular expression.
+To identify the shortest possible match (=non-greedy) you add the special character '?' to your regular expression.
 	 	
 		r, err := regexp.Compile(`'.*?'`)
 		res := r.FindString(" 'abc','def','ghi' ")
