@@ -73,6 +73,8 @@ This regular expression will not match:
 	// Will print 'false'
 	fmt.Printf("%v", r.MatchString("Hello Regular Expression."))
 	 	
+TODO: CompilePOSIX/MustCompilePOSIX.
+
 ## Character classes ##
 
 Character class '\w' represents any character from the class [A-Za-z0-9_], mnemonic: 'word'.
