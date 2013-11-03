@@ -15,7 +15,7 @@ You want to know if a string matches a regular expression. The *MatchString*-fun
 		r, err := regexp.Compile(`Hello`)
 
 		if err != nil {
-			fmt.Printf("There is a problem with you regexp.\n")
+			fmt.Printf("There is a problem with your regexp.\n")
 			return
 		}
 
