@@ -6,7 +6,7 @@ If literal strings separate the fields in your input you don't need to use regex
 	 	
 		s := "abc,def,ghi"
 		r, err := regexp.Compile(`[^,]+`) // everything that is not a comma
-		res:= r.FindAllString(s, -1)
+		res := r.FindAllString(s, -1)
 		// Prints [abc def ghi] 
 		fmt.Printf("%v", res)
 	 	
@@ -22,12 +22,12 @@ The *Split*-function in the *strings*-package serves the same purpose and the sy
 
 ## Testing if a specific substring exists in your string ##
 
-The MatchString-function allows you to find a literal string in another string.
+The *MatchString*-function allows you to find a literal string in another string.
 
 	 	
 		s := "OttoFritzHermanWaldoKarlSiegfried"
 		r, err := regexp.Compile(`Waldo`)
-		res:= r.MatchString(s)
+		res := r.MatchString(s)
 		// Prints true 
 		fmt.Printf("%v", res)
 	 	
