@@ -73,7 +73,36 @@ This regular expression will not match:
 	// Will print 'false'
 	fmt.Printf("%v", r.MatchString("Hello Regular Expression."))
 	 	
-TODO: CompilePOSIX/MustCompilePOSIX.
+## CompilePOSIX/MustCompilePOSIX ##
+
+*CompilePOSIX* and *MustCompilePOSIX* are running a slightly different engine. The rules are implemented
+following the POSIX ERE (extended regular expression); from the viewpoint of Go this implies a 
+_restricted_ set of rules, namely those supported by *egrep*. Thus, a couple of niceties that Go's standard
+re2-engine supports are not found in the POSIX version, e.g. *\A*.
+
+	s := "ABCDEEEEE"
+	rr := regexp.MustCompile(`\AABCDE{2}|ABCDE{4}`)
+	rp := regexp.MustCompilePOSIX(`\AABCDE{2}|ABCDE{4}`)
+	fmt.Println(rr.FindAllString(s, 2))
+	fmt.Println(rp.FindAllString(s, 2))
+
+This fails to compile, but only for the *MustCompilePOSIX*-function, because *\A* is not part of POSIX ERE.
+
+Furthermore the POSIX engine will prefer the _leftmost-longest_ match. It will not return after finding the first
+match, but will check that the found match is indeed the longest one. Thus,
+
+	s := "ABCDEEEEE"
+	rr := regexp.MustCompile(`ABCDE{2}|ABCDE{4}`)
+	rp := regexp.MustCompilePOSIX(`ABCDE{2}|ABCDE{4}`)
+	fmt.Println(rr.FindAllString(s, 2))
+	fmt.Println(rp.FindAllString(s, 2))
+	
+will print
+
+	[ABCDEE]    <- first acceptable match
+	[ABCDEEEE]  <- But POSIX wants the longer match
+
+The two POSIX-functions are probably only the methods of choice if you have very specific requirements...  
 
 ## Character classes ##
 
