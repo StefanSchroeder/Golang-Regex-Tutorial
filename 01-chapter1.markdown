@@ -180,7 +180,7 @@ The dot '.' matches any character.
 
 Finding one backslash '\': It must be escaped twice in the regex and once in the string.
 	 	
-	r, err := regexp.Compile(`C:\\\\`)
+	r, err := regexp.Compile("C:\\\\")
 	if r.MatchString("Working on drive C:\\") == true {
 		fmt.Printf("Matches.") // <---
 	} else {
