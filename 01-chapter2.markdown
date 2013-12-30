@@ -61,7 +61,49 @@ The *FindStringSubmatchIndex*-function ...
 
 ## Named matches ##
 
-To be written.
+It is somewhat awkward that the matches are simply stored in sequence in arrays. Two different kinds of problems arise.
+
+First, when you insert a new group somewhere in your regular expression all the array indexes in the following matches must be incremented. That's a nuisance.
+
+Second, the string might be constructed at runtime and may contain a number of parentheses that is beyond our control. That means that we don't know at which index our nicely contructed parentheses match. 
+
+To resolve this issue _named matches_ were introduced. They allow to give a symbolic name to the match that can be used to look up the result.
+
+	re := regexp.MustCompile("(?P<first_char>.)(?P<middle_part>.*)(?P<last_char>.)")
+	n1 := re.SubexpNames()
+	r2 := re.FindAllStringSubmatch("Super", -1)[0]
+
+	md := map[string]string{}
+	for i, n := range r2 {
+		fmt.Printf("%d. match='%s'\tname='%s'\n", i, n, n1[i])
+		md[n1[i]] = n
+	}
+	fmt.Printf("The names are  : %v\n", n1)
+	fmt.Printf("The matches are: %v\n", r2)
+	fmt.Printf("The first character is %s\n", md["first_char"])
+	fmt.Printf("The last  character is %s\n", md["last_char"])
+
+In this example the string 'Super' is matched against a regexp that has three parts:
+
+	A single character (.) which is named +first_char+. 
+	
+	A middle part composed of a sequence of characters, named +middle_part+
+
+	A last character (.), consequently named +last_char+.
+
+To simplify the usage of the results, be store all the names in n1 and zip them together with the match result r2 into  a new map in which we store the results as values for the named variables in a map named _md_.
+
+The sample prints
+
+	0. match='Super'	name=''
+	1. match='S'	name='first_char'
+	2. match='upe'	name='middle_part'
+	3. match='r'	name='last_char'
+	The names are  : [ first_char middle_part last_char]
+	The matches are: [Super S upe r]
+	The first character is S
+	The last  character is r
+
 
 # Advanced Repetition #
 
