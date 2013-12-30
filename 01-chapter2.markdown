@@ -85,13 +85,15 @@ To resolve this issue _named matches_ were introduced. They allow to give a symb
 
 In this example the string 'Super' is matched against a regexp that has three parts:
 
-A single character (.) which is named +first_char+. 
+A single character (.) which is named 'first_char'. 
 	
-A middle part composed of a sequence of characters, named +middle_part+
+A middle part composed of a sequence of characters, named 'middle_part'
 
-A last character (.), consequently named +last_char+.
+A last character (.), consequently named 'last_char'.
 
-To simplify the usage of the results, be store all the names in n1 and zip them together with the match result r2 into  a new map in which we store the results as values for the named variables in a map named _md_.
+To simplify the usage of the results, we store all the names in n1 and zip them together with the match result r2 into  a new map in which we store the results as values for the named variables in a map named _md_.
+
+Note that the entire string 'Super' has the empty-string as a pseudo-key. 
 
 The sample prints
 
