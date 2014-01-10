@@ -10,7 +10,7 @@ In the first version I am going to cover only functions from the regexp-package 
 
 [Part 2: Advanced](01-chapter2.markdown): More sophisticated regular expressions.
 
-[Part 3: Cookbook](01-chapter3.markdown): A few examples programs.
+[Part 3: Cookbook](01-chapter3.markdown): A few example programs.
 
 [Part 4: Alternatives](01-chapter4.markdown): When regexps are not the right solution.
 
