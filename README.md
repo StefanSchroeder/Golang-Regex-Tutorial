@@ -1,3 +1,5 @@
+I have 100 stars! Thank you for the encouragement to all my readers!
+
 Golang-Regex-Tutorial
 =====================
 
