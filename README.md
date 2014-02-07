@@ -1,5 +1,9 @@
 I have 100 stars! Thank you for the encouragement to all my readers!
 
+Ok, guys, what's going on here? I got 25 stars in the last 24 hours. Something is going on here.
+Can anybody tell me what? Has this tutorial been mentioned somewhere?
+
+
 Golang-Regex-Tutorial
 =====================
 
