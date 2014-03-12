@@ -25,6 +25,7 @@ that splits a string at white space:
 		fmt.Printf("Fields are: %q", strings.Fields("  Frodo Thorin  Dwalin   "))
 
 yields:
+
 		Fields are: ["Frodo" "Thorin" "Dwalin"]
 		
 You can even provide a more sophisticated function the variant *FieldsFunc*. It takes
