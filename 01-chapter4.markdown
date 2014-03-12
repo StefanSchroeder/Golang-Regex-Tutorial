@@ -19,6 +19,19 @@ The *Split*-function in the *strings*-package serves the same purpose and the sy
 		// Prints [abc def ghi] 
 		fmt.Printf("%v", res)
 	 	
+As a conveniece the Standard library also provides the *Fields* function in the strings-package,
+that splits a string at white space:
+
+		fmt.Printf("Fields are: %q", strings.Fields("  Frodo Thorin  Dwalin   "))
+
+yields:
+		Fields are: ["Frodo" "Thorin" "Dwalin"]
+		
+You can even provide a more sophisticated function the variant *FieldsFunc*. It takes
+your string and a function as parameter. The function must accept a rune as a parameter.
+
+FIXME Example missing
+
 
 ## Testing if a specific substring exists in your string ##
 
