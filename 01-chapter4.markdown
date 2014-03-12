@@ -19,7 +19,7 @@ The *Split*-function in the *strings*-package serves the same purpose and the sy
 		// Prints [abc def ghi] 
 		fmt.Printf("%v", res)
 	 	
-As a conveniece the Standard library also provides the *Fields* function in the strings-package,
+As a convenience the Standard library also provides the *Fields* function in the strings-package,
 that splits a string at white space:
 
 		fmt.Printf("Fields are: %q", strings.Fields("  Frodo Thorin  Dwalin   "))
