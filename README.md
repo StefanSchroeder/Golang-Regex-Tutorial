@@ -1,7 +1,6 @@
-I have >200 stars! Thank you for the encouragement to all my readers!
+Almost 300 stars! Thank you for the encouragement to all my readers!
 
-I will update the tutorial for 1.3 soon.
-
+Let me know what you are missing from this tutorial.
 
 Golang-Regex-Tutorial
 =====================
