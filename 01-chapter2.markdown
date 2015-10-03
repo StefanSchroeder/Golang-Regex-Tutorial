@@ -65,7 +65,7 @@ It is somewhat awkward that the matches are simply stored in sequence in arrays.
 
 First, when you insert a new group somewhere in your regular expression all the array indexes in the following matches must be incremented. That's a nuisance.
 
-Second, the string might be constructed at runtime and may contain a number of parentheses that is beyond our control. That means that we don't know at which index our nicely contructed parentheses match. 
+Second, the string might be constructed at runtime and may contain a number of parentheses that is beyond our control. That means that we don't know at which index our nicely constructed parentheses match. 
 
 To resolve this issue _named matches_ were introduced. They allow to give a symbolic name to the match that can be used to look up the result.
 
