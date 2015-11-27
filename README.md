@@ -18,4 +18,4 @@ This work is licensed under the Creative Commons Attribution-NonCommercial-Share
 
 I am planning to setup gh-pages: http://stefanschroeder.github.io/Golang-Regex-Tutorial/
 
-A Chinese version translated by [B1nj0y](https://github.com/gingerhot).
+[A Chinese version translated](zh/) by [B1nj0y](https://github.com/gingerhot).
