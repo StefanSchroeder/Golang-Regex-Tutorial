@@ -1,12 +1,12 @@
-Golang-Regex-Tutorial
+Golang 正则表达式教程
 =====================
 
-Golang - Regular Expression Tutorial
+这是一个针对 Go 语言的正则表达式的教程。
 
-This is a regular expression tutorial for Go, the language.
-
-Go to http://www.golang.org for more information about Go.
+更多 Go 的知识可到 Go 语言官网：http://www.golang.org.
 
 
-This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.
+本著作基于 Creative Commons Attribution-NonCommercial-ShareAlike 3.0 许可证。
+
+中文翻译：[B1nj0y](https://github.com/gingerhot)
 
