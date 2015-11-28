@@ -267,6 +267,14 @@ Clear out multi-line comments in css file
 				fmt.Printf("%s", v[1])
 			}
 		}
+		// Prints
+		// body {
+		//   background: #ffffff url("actual1.png") no-repeat right top;
+		// }
+		//
+		// .test-img {
+		//   background-image: url("http://test.com/actual2.png");
+		// }
 
 ## Shall ^/$ Match at a Newline? ##
 
