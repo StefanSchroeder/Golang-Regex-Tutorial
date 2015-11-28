@@ -247,6 +247,27 @@ Now using the the (?s) flag, the newline is kept in the result.
 		// ar an as al ab am a
 		// ar ac]>
 	 	
+Clear out multi-line comments in css file
+
+		s := `/* multi line
+		comment with
+		url("http://commented1.test.com/img.jpg") */
+		body {
+		  background: #ffffff url("actual1.png") no-repeat right top;
+		}
+		/* single line commented out url("http://commented2.test.com/img.jpg") *//* back to back comment */
+		.test-img {
+		  background-image: url("http://test.com/actual2.png");
+		}`
+
+		re := regexp.MustCompile(`(?s)(?:/\*.*?\*/)?((?:[^/]|/[^*])*)`)
+		results := re.FindAllStringSubmatch(s, -1)
+		for _, v := range results {
+			if v[1] != "" {
+				fmt.Printf("%s", v[1])
+			}
+		}
+
 ## Shall ^/$ Match at a Newline? ##
 
 When we have a multiline string you can control
