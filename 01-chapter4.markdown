@@ -31,7 +31,45 @@ yields:
 You can even provide a more sophisticated function the variant *FieldsFunc*. It takes
 your string and a function as parameter. The function must accept a rune as a parameter.
 
-FIXME Example missing
+## FieldsFunc-Example
+
+Suppose you want to process comma separated values (good ol' CSV). The naive implementation
+with *Split* would work in most cases, but sometimes you have commas embedded in a single field.
+Typically the user then uses quotes to protect that field (and thus the comma inside) from being split.
+
+This example uses a global boolean (boo!) to keep track of quoting (obviously there is more than one
+way to break this), but it works for simple cases.
+
+	package main
+	import (
+	        "fmt"
+	        "strings"
+	)
+	var inQuotes = false
+	func main() {
+	        s := " 1 , 4, \" xx,yy \", 5 "
+	        f := func(c rune) bool {
+	                if c== '"' {
+	                        inQuotes = !inQuotes
+	                }
+	                if inQuotes == false && c == ',' {
+	                        return true
+	                }
+	                return false
+	        }
+	        for k, v := range strings.FieldsFunc(s, f) {
+	                fmt.Printf ("%v: %v\n", k, v)
+	        }
+	}
+
+Prints:
+
+	0:  1 
+	1:  4
+	2:  " xx,yy "
+	3:  5 
+
+As an exercise you might want to delete the quotes (Hint: *Trim* is your friend.)
 
 
 ## Testing if a specific substring exists in your string ##
