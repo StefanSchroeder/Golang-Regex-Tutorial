@@ -345,7 +345,7 @@ A negated character class reverses the match of the class. In this case it Will 
 
 The Golang regexp library implements the POSIX character classes. These are simply
 aliases for frequently used classes that are given are more readable name. The classes are:
-(https://re2.googlecode.com/hg/doc/syntax.html)
+(https://github.com/google/re2/blob/master/doc/syntax.txt)
 
 	[:alnum:]	alphanumeric (≡ [0-9A-Za-z])
 	[:alpha:]	alphabetic (≡ [A-Za-z])
