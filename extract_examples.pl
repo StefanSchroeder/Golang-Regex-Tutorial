@@ -11,6 +11,7 @@ my $insection = 0;
 my $marker = "\t \t";
 
 my $code = <<EOT;
+```go
 package main
 
 import "fmt"
@@ -19,6 +20,7 @@ import "regexp"
 func main() {
 EXAMPLES
 }
+```
 EOT
 
 while(<>)
