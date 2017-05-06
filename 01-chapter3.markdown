@@ -3,53 +3,55 @@
 ## grep ##
 
 The grep-tool searches for (regular) expressions in text files. Every single line is read and if the line matches the pattern provided on the command line, that line is printed.
-	 	
-	package main
 
-	import (
-		"flag"
-		"regexp"
-		"bufio"
-		"fmt"
-		"os"
-	)
+```go
+package main
 
-	func grep(re, filename string) {
-	    regex, err := regexp.Compile(re)
-	    if err != nil {
-			return // there was a problem with the regular expression.
-	    }
+import (
+	"flag"
+	"regexp"
+	"bufio"
+	"fmt"
+	"os"
+)
 
-	    fh, err := os.Open(filename)
-	    f := bufio.NewReader(fh)
+func grep(re, filename string) {
+    regex, err := regexp.Compile(re)
+    if err != nil {
+		return // there was a problem with the regular expression.
+    }
 
-	    if err != nil {
-			return // there was a problem opening the file.
-	    }
-	    defer fh.Close()
+    fh, err := os.Open(filename)
+    f := bufio.NewReader(fh)
 
-	    buf := make([]byte, 1024)
-	    for {
-			buf, _ , err = f.ReadLine()
-			if err != nil {
-				return
-			}
+    if err != nil {
+		return // there was a problem opening the file.
+    }
+    defer fh.Close()
 
-			s := string(buf)
-			if regex.MatchString(s) {
-				fmt.Printf("%s\n", string(buf))
-			}
-	    }
-	}
-
-	func main() {
-		flag.Parse()
-		if flag.NArg() == 2 {
-			grep(flag.Arg(0), flag.Arg(1))
-		} else {
-			fmt.Printf("Wrong number of arguments.\n")
+    buf := make([]byte, 1024)
+    for {
+		buf, _ , err = f.ReadLine()
+		if err != nil {
+			return
 		}
+
+		s := string(buf)
+		if regex.MatchString(s) {
+			fmt.Printf("%s\n", string(buf))
+		}
+    }
+}
+
+func main() {
+	flag.Parse()
+	if flag.NArg() == 2 {
+		grep(flag.Arg(0), flag.Arg(1))
+	} else {
+		fmt.Printf("Wrong number of arguments.\n")
 	}
+}
+```
 	 	
 If you don't know what grep does, search 'man grep'.
 
@@ -60,52 +62,53 @@ This tool is an improved version of grep. It does not only search for a pattern,
 
 Usage: ./replacer old new filename
 
-	 	
-	package main
+```go 	
+package main
 
-	import (
-		"flag"
-		"regexp"
-		"bufio"
-		"fmt"
-		"os"
-	)
+import (
+	"flag"
+	"regexp"
+	"bufio"
+	"fmt"
+	"os"
+)
 
-	func replace(re, repl, filename string) {
-	    regex, err := regexp.Compile(re)
-	    if err != nil {
-			return // there was a problem with the regular expression.
-	    }
+func replace(re, repl, filename string) {
+    regex, err := regexp.Compile(re)
+    if err != nil {
+		return // there was a problem with the regular expression.
+    }
 
-	    fh, err := os.Open(filename)
-	    f := bufio.NewReader(fh)
+    fh, err := os.Open(filename)
+    f := bufio.NewReader(fh)
 
-	    if err != nil {
-			return // there was a problem opening the file.
-	    }
-	    defer fh.Close()
+    if err != nil {
+		return // there was a problem opening the file.
+    }
+    defer fh.Close()
 
-	    buf := make([]byte, 1024)
-	    for {
-			buf, _ , err = f.ReadLine()
-			if err != nil {
-				return
-			}
-
-			s := string(buf)
-			result := regex.ReplaceAllString(s, repl)
-			fmt.Print(result + "\n")
-	    }
-	}
-
-	func main() {
-		flag.Parse()
-		if flag.NArg() == 3 {
-			repl(flag.Arg(0), flag.Arg(1), flag.Arg(2))
-		} else {
-			fmt.Printf("Wrong number of arguments.\n")
+    buf := make([]byte, 1024)
+    for {
+		buf, _ , err = f.ReadLine()
+		if err != nil {
+			return
 		}
+
+		s := string(buf)
+		result := regex.ReplaceAllString(s, repl)
+		fmt.Print(result + "\n")
+    }
+}
+
+func main() {
+	flag.Parse()
+	if flag.NArg() == 3 {
+		repl(flag.Arg(0), flag.Arg(1), flag.Arg(2))
+	} else {
+		fmt.Printf("Wrong number of arguments.\n")
 	}
+}
+```
 	 	
 ## Verifying an email-address ##
 
