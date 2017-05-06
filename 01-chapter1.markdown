@@ -4,28 +4,30 @@
 
 You want to know if a string matches a regular expression. The *MatchString*-function returns 'true' if the string-argument matches the regular expression that you prepared with *Compile*.
 
-	package main
+```go
+package main
 
-	import (
-		"fmt"
-		"regexp"
-	)
+import (
+	"fmt"
+	"regexp"
+)
 
-	func main() {
-		r, err := regexp.Compile(`Hello`)
+func main() {
+	r, err := regexp.Compile(`Hello`)
 
-		if err != nil {
-			fmt.Printf("There is a problem with your regexp.\n")
-			return
-		}
-
-		// Will print 'Match'
-		if r.MatchString("Hello Regular Expression.") == true {
-			fmt.Printf("Match ")
-		} else {
-			fmt.Printf("No match ")
-		}
+	if err != nil {
+		fmt.Printf("There is a problem with your regexp.\n")
+		return
 	}
+
+	// Will print 'Match'
+	if r.MatchString("Hello Regular Expression.") == true {
+		fmt.Printf("Match ")
+	} else {
+		fmt.Printf("No match ")
+	}
+}
+```
 
 *Compile* is the heart of the regexp-package. Every regular expression must be prepared with *Compile* or
 its sister-function *MustCompile*. The *MustCompile*-function behaves
@@ -34,25 +36,28 @@ error in *MustCompile* leads to a panic, there is no need for returning an error
 This makes it easier to chain the *MustCompile* call with the match-function of your choice, like shown here:
 (But you should avoid the repeated compilation of a regular expression in a loop for performance reasons.)
 
-	package main
+```go
+package main
 
-	import (
-		"fmt"
-		"regexp"
-	)
+import (
+	"fmt"
+	"regexp"
+)
 
-	func main() {
-		if regexp.MustCompile(`Hello`).MatchString("Hello Regular Expression.") == true {
-			fmt.Printf("Match ") // Will print 'Match' again
-		} else {
-			fmt.Printf("No match ")
-		}
+func main() {
+	if regexp.MustCompile(`Hello`).MatchString("Hello Regular Expression.") == true {
+		fmt.Printf("Match ") // Will print 'Match' again
+	} else {
+		fmt.Printf("No match ")
 	}
-
+}
+```
 
 The following illegal regexp
 
-		var myre = regexp.MustCompile(`\d(+`)
+```go
+var myre = regexp.MustCompile(`\d(+`)
+```
 
 will yield
 
@@ -68,10 +73,12 @@ The *Compile*-function returns in its second argument an error value. In this tu
 For the rest of this tutorial the evaluation of the error value is skipped for brevity.
 
 This regular expression will not match:
-	 	
-	r, err := regexp.Compile(`Hxllo`)
-	// Will print 'false'
-	fmt.Printf("%v", r.MatchString("Hello Regular Expression."))
+
+```go
+r, err := regexp.Compile(`Hxllo`)
+// Will print 'false'
+fmt.Printf("%v", r.MatchString("Hello Regular Expression."))
+```
 	 	
 ## CompilePOSIX/MustCompilePOSIX ##
 
@@ -80,22 +87,26 @@ following the POSIX ERE (extended regular expression); from the viewpoint of Go 
 _restricted_ set of rules, namely those supported by *egrep*. Thus, a couple of niceties that Go's standard
 re2-engine supports are not found in the POSIX version, e.g. *\A*.
 
-	s := "ABCDEEEEE"
-	rr := regexp.MustCompile(`\AABCDE{2}|ABCDE{4}`)
-	rp := regexp.MustCompilePOSIX(`\AABCDE{2}|ABCDE{4}`)
-	fmt.Println(rr.FindAllString(s, 2))
-	fmt.Println(rp.FindAllString(s, 2))
+```go
+s := "ABCDEEEEE"
+rr := regexp.MustCompile(`\AABCDE{2}|ABCDE{4}`)
+rp := regexp.MustCompilePOSIX(`\AABCDE{2}|ABCDE{4}`)
+fmt.Println(rr.FindAllString(s, 2))
+fmt.Println(rp.FindAllString(s, 2))
+```
 
 This fails to compile, but only for the *MustCompilePOSIX*-function, because *\A* is not part of POSIX ERE.
 
 Furthermore the POSIX engine will prefer the _leftmost-longest_ match. It will not return after finding the first
 match, but will check that the found match is indeed the longest one. Thus,
 
-	s := "ABCDEEEEE"
-	rr := regexp.MustCompile(`ABCDE{2}|ABCDE{4}`)
-	rp := regexp.MustCompilePOSIX(`ABCDE{2}|ABCDE{4}`)
-	fmt.Println(rr.FindAllString(s, 2))
-	fmt.Println(rp.FindAllString(s, 2))
+```go
+s := "ABCDEEEEE"
+rr := regexp.MustCompile(`ABCDE{2}|ABCDE{4}`)
+rp := regexp.MustCompilePOSIX(`ABCDE{2}|ABCDE{4}`)
+fmt.Println(rr.FindAllString(s, 2))
+fmt.Println(rp.FindAllString(s, 2))
+```
 	
 will print
 
@@ -107,239 +118,286 @@ The two POSIX-functions are probably only the methods of choice if you have very
 ## Character classes ##
 
 Character class '\w' represents any character from the class [A-Za-z0-9_], mnemonic: 'word'.
-	 	
-	r, err := regexp.Compile(`H\wllo`)
-	// Will print 'true'. 
-	fmt.Printf("%v", r.MatchString("Hello Regular Expression."))
-	 	
+
+```go
+r, err := regexp.Compile(`H\wllo`)
+// Will print 'true'. 
+fmt.Printf("%v", r.MatchString("Hello Regular Expression."))
+```
 Character class '\d' represents any numeric digit.
-	 	
-	r, err := regexp.Compile(`\d`)
-	// Will print 'true':
-	fmt.Printf("%v", r.MatchString("Seven times seven is 49."))
-	// Will print 'false':
-	fmt.Printf("%v", r.MatchString("Seven times seven is forty-nine."))
-	 	
+
+```go
+r, err := regexp.Compile(`\d`)
+// Will print 'true':
+fmt.Printf("%v", r.MatchString("Seven times seven is 49."))
+// Will print 'false':
+fmt.Printf("%v", r.MatchString("Seven times seven is forty-nine."))
+```
+
 Character class '\s' represents any of the following whitespaces: TAB, SPACE, CR, LF. Or more precisely [\t\n\f\r ].
-	 	
-	r, err := regexp.Compile(`\s`)
-	// Will print 'true':
-	fmt.Printf("%v", r.MatchString("/home/bill/My Documents"))
-	 	
+
+```go	 	
+r, err := regexp.Compile(`\s`)
+// Will print 'true':
+fmt.Printf("%v", r.MatchString("/home/bill/My Documents"))
+```	 	
+
 Character classes can be negated by using the uppercase '\D', '\S', '\W'. Thus, '\D' is any character that is *not* a '\d'. 
-	 	
-	r, err := regexp.Compile(`\S`) // Not a whitespace
-	// Will print 'true', obviously there are non-whitespaces here:
-	fmt.Printf("%v", r.MatchString("/home/bill/My Documents"))
-	 	
+
+```go
+r, err := regexp.Compile(`\S`) // Not a whitespace
+// Will print 'true', obviously there are non-whitespaces here:
+fmt.Printf("%v", r.MatchString("/home/bill/My Documents"))
+```
+
 Check if a string has anything that is not a word-char.
-	 	
-	r, err := regexp.Compile(`\W`) // Not a \w character.
-	
-	fmt.Printf("%v", r.MatchString("555-shoe")) // true: has a non-word char: The hyphen
-	fmt.Printf("%v", r.MatchString("555shoe")) // false: has no non-word char.
-	 	
+
+```go
+r, err := regexp.Compile(`\W`) // Not a \w character.
+
+fmt.Printf("%v", r.MatchString("555-shoe")) // true: has a non-word char: The hyphen
+fmt.Printf("%v", r.MatchString("555shoe")) // false: has no non-word char.
+```
+
 ## What's in a Match? ##
 
 The *FindString*-function finds a string. When you use a literal string, the result will obviously be the string itself. Only when you start using patterns and classes the result will be more interesting.
-	 	
-	r, err := regexp.Compile(`Hello`)
-	// Will print 'Hello'
-	fmt.Printf(r.FindString("Hello Regular Expression. Hullo again."))
+
+```go
+r, err := regexp.Compile(`Hello`)
+// Will print 'Hello'
+fmt.Printf(r.FindString("Hello Regular Expression. Hullo again."))
+```
 	 	
 When FindString does not find a string that matches the regular expression, it will return the empty string. Be aware that the empty string might also be the result of a valid match.
-	 	
-	r, err := regexp.Compile(`Hxllo`)
-	// Will print nothing (=the empty string)
-	fmt.Printf(r.FindString("Hello Regular Expression."))
-	 	
+
+```go
+r, err := regexp.Compile(`Hxllo`)
+// Will print nothing (=the empty string)
+fmt.Printf(r.FindString("Hello Regular Expression."))
+```
+
 FindString returns after the first match. If you are interested in more possible matches you would use *FindAllString()*, see below.
 
 ### Special Characters ###
 
 The dot '.' matches any character. 
-	 	
-	// Will print 'cat'.
-	r, err := regexp.Compile(`.at`)
-	fmt.Printf(r.FindString("The cat sat on the mat."))
-	 	
+
+```go
+// Will print 'cat'.
+r, err := regexp.Compile(`.at`)
+fmt.Printf(r.FindString("The cat sat on the mat."))
+```
+
 'cat' was the first match.
-	 	
-	// more dot.
-	s:= "Nobody expects the Spanish inquisition."
-	//          -- --     --
-	r, err := regexp.Compile(`e.`)
-	res := r.FindAllString(s, -1) // negative: all matches
-	// Prints [ex ec e ]. The last item is 'e' and a space.
-	fmt.Printf("%v", res)
-	res = r.FindAllString(s, 2) // find 2 or less matches
-	// Prints [ex ec]. 
-	fmt.Printf("%v", res)
-	 	
+
+```go
+// more dot.
+s:= "Nobody expects the Spanish inquisition."
+//          -- --     --
+r, err := regexp.Compile(`e.`)
+res := r.FindAllString(s, -1) // negative: all matches
+// Prints [ex ec e ]. The last item is 'e' and a space.
+fmt.Printf("%v", res)
+res = r.FindAllString(s, 2) // find 2 or less matches
+// Prints [ex ec]. 
+fmt.Printf("%v", res)
+```
+
 ## Literal Special Characters ##
 
 Finding one backslash '\': It must be escaped twice in the regex and once in the string.
-	 	
-	r, err := regexp.Compile("C:\\\\")
-	if r.MatchString("Working on drive C:\\") == true {
-		fmt.Printf("Matches.") // <---
-	} else {
-		fmt.Printf("No match.")
-	}
-	 	
+
+```go
+r, err := regexp.Compile("C:\\\\")
+if r.MatchString("Working on drive C:\\") == true {
+	fmt.Printf("Matches.") // <---
+} else {
+	fmt.Printf("No match.")
+}
+```
+
 Finding a literal dot:
-	 	
-	r, err := regexp.Compile(`\.`)
-	if r.MatchString("Short.") == true {
-		fmt.Printf("Has a dot.") // <---
-	} else {
-		fmt.Printf("Has no dot.")
-	}
+
+```go
+r, err := regexp.Compile(`\.`)
+if r.MatchString("Short.") == true {
+	fmt.Printf("Has a dot.") // <---
+} else {
+	fmt.Printf("Has no dot.")
+}
+```
 	 	
 The other special characters that are relevant for constructing regular expressions work in a similar fashion: .+*?()|[]{}^$
 
 Finding a literal dollar symbol:
-	 	
-	r, err := regexp.Compile(`\$`)
-	if len(r.FindString("He paid $150 for that software.")) != 0 {
-		fmt.Printf("Found $-symbol.") // <-
-	} else {
-		fmt.Printf("No $$$.")
-	}
+
+```go
+r, err := regexp.Compile(`\$`)
+if len(r.FindString("He paid $150 for that software.")) != 0 {
+	fmt.Printf("Found $-symbol.") // <-
+} else {
+	fmt.Printf("No $$$.")
+}
+```
 	 	
 ## Simple Repetition ##
 
 The *FindAllString*-function returns an array with all the strings that matched. FindAllString takes two arguments, a string and the maximum number of matches that shall be returned. If you definitely want all matches use '-1'.
 
 Finding words. A word is a sequence of characters of type \w. The plus symbol '+' signifies a repetition:
-	 	
-	s := "Eenie meenie miny moe."
-	r, err := regexp.Compile(`\w+`)
-	res := r.FindAllString(s, -1)
-	// Prints [Eenie meenie miny moe]
-	fmt.Printf("%v", res)
-	 	
+
+```go
+s := "Eenie meenie miny moe."
+r, err := regexp.Compile(`\w+`)
+res := r.FindAllString(s, -1)
+// Prints [Eenie meenie miny moe]
+fmt.Printf("%v", res)
+```
+
 In contrast to wildcards used on the commandline for filename matching, the '\*' does not symbolize 'any character', but the repetition of the previous character (or group). While the '+' requires at least a single occurence of its preceding symbol, the '*' is also satisfied with 0 occurences. This can lead to strange results.
-	 	
-	s := "Firstname Lastname"
-	r, err := regexp.Compile(`\w+\s\w+`)
-	res := r.FindString(s)
-	// Prints Firstname Lastname
-	fmt.Printf("%v", res)
-	 	
+
+```go
+s := "Firstname Lastname"
+r, err := regexp.Compile(`\w+\s\w+`)
+res := r.FindString(s)
+// Prints Firstname Lastname
+fmt.Printf("%v", res)
+```
+
 But if this is some user supplied input, there might be two spaces:
-	 	
-	s := "Firstname  Lastname"
-	r, err := regexp.Compile(`\w+\s\w+`)
-	res := r.FindString(s)
-	// Prints nothing (the empty string=no match)
-	fmt.Printf("%v", res)
-	 	
+
+```go
+s := "Firstname  Lastname"
+r, err := regexp.Compile(`\w+\s\w+`)
+res := r.FindString(s)
+// Prints nothing (the empty string=no match)
+fmt.Printf("%v", res)
+```
+
 We allow any number (but at least one) of spaces with '\s+':
-	 	
-	s := "Firstname  Lastname"
-	r, err := regexp.Compile(`\w+\s+\w+`)
-	res := r.FindString(s)
-	// Prints Firstname  Lastname
-	fmt.Printf("%v", res)
-	 	
+
+```go
+s := "Firstname  Lastname"
+r, err := regexp.Compile(`\w+\s+\w+`)
+res := r.FindString(s)
+// Prints Firstname  Lastname
+fmt.Printf("%v", res)
+```
+
 If you read a text file in INI-style, you might want to be permissive regarding spaces around the equal-sign.
-	 	
-	s := "Key=Value"
-	r, err := regexp.Compile(`\w+=\w+`)
-	res := r.FindAllString(s, -1)
-	// OK, prints Key=Value
-	fmt.Printf("%v", res)
-	 	
+
+```go
+s := "Key=Value"
+r, err := regexp.Compile(`\w+=\w+`)
+res := r.FindAllString(s, -1)
+// OK, prints Key=Value
+fmt.Printf("%v", res)
+```
 
 Now  let's add some spaces around the equal sign.
 
-	 	
-	s := "Key = Value"
-	r, err := regexp.Compile(`\w+=\w+`)
-	res := r.FindAllString(s, -1)
-	// FAIL, prints nothing, the \w does not match the space.
-	fmt.Printf("%v", res)
+```go	 	
+s := "Key = Value"
+r, err := regexp.Compile(`\w+=\w+`)
+res := r.FindAllString(s, -1)
+// FAIL, prints nothing, the \w does not match the space.
+fmt.Printf("%v", res)
+```
 	 	
 Therefore we allow a number of spaces (including possibly 0) with '\s*':
-	 	
-	s := "Key = Value"
-	r, err := regexp.Compile(`\w+\s*=\s*\w+`)
-	res := r.FindAllString(s, -1)
-	fmt.Printf("%v", res)
-	 	
+
+```go
+s := "Key = Value"
+r, err := regexp.Compile(`\w+\s*=\s*\w+`)
+res := r.FindAllString(s, -1)
+fmt.Printf("%v", res)
+```
+
 The Go-regexp pattern supports a few more patterns constructed with '?'.
 
 ## Anchor and Boundaries ##
 
 The caret symbol ^ denotes a 'begin-of-line'.
-	 	
-	s := "Never say never."
-	r, err1 := regexp.Compile(`^N`)        // Do we have an 'N' at the beginning?
-	fmt.Printf("%v ", r.MatchString(s)) // true
-	t, err2 := regexp.Compile(`^n`)        // Do we have an 'n' at the beginning?
-	fmt.Printf("%v ", t.MatchString(s)) // false
-	 	
+
+```go
+s := "Never say never."
+r, err1 := regexp.Compile(`^N`)        // Do we have an 'N' at the beginning?
+fmt.Printf("%v ", r.MatchString(s)) // true
+t, err2 := regexp.Compile(`^n`)        // Do we have an 'n' at the beginning?
+fmt.Printf("%v ", t.MatchString(s)) // false
+```
+
 The dollar symbol $ denotes an 'end-of-line'.
-	 	
-	s := "All is well that ends well"
-	r, err := regexp.Compile(`well$`)
-	fmt.Printf("%v ", r.MatchString(s)) // true
 
-	r, err = regexp.Compile(`well`)
-	fmt.Printf("%v ", r.MatchString(s)) // true, but matches with first
-	   					        // occurrence of 'well'
-	r, err = regexp.Compile(`ends$`)
-	fmt.Printf("%v ", r.MatchString(s)) // false, not at end of line.
-	 	
+```go
+s := "All is well that ends well"
+r, err := regexp.Compile(`well$`)
+fmt.Printf("%v ", r.MatchString(s)) // true
+
+r, err = regexp.Compile(`well`)
+fmt.Printf("%v ", r.MatchString(s)) // true, but matches with first
+						// occurrence of 'well'
+r, err = regexp.Compile(`ends$`)
+fmt.Printf("%v ", r.MatchString(s)) // false, not at end of line.
+```
+
 We saw that 'well' matched. To figure out, where exactly the regexp matched, let's have a look at the indexes. The *FindStringIndex*-function returns an array with two entries. The first entry is the index (starting from 0, of course) where the regular expression matched. The second is the index _in front of which_ the regexp ended. 
-	 	
-	s := "All is well that ends well"
-	//    012345678901234567890123456
-	//              1         2
-	r, err := regexp.Compile(`well$`)
-	fmt.Printf("%v", r.FindStringIndex(s)) // Prints [22 26]
-	
-	r, err = regexp.Compile(`well`)
-	fmt.Printf("%v ", r.MatchString(s)) // true, but matches with first
-	  					    // occurrence of 'well'
-	fmt.Printf("%v", r.FindStringIndex(s)) // Prints [7 11], the match starts at 7 and end before 11.
-	
-	r, err = regexp.Compile(`ends$`)
-	fmt.Printf("%v ", r.MatchString(s)) // false, not at end of line.
-	 	
-You can find a word boundary with '\b'. The *FindAllStringIndex*-function captures all the hits for a regexp in a container array.
-	 	
-	s := "How much wood would a woodchuck chuck in Hollywood?"
-	//    012345678901234567890123456789012345678901234567890
-	//              10        20        30        40        50
-	//             -1--         -2--                    -3--
-	// Find words that *start* with wood
-	r, err := regexp.Compile(`\bwood`)              //    1      2
-	fmt.Printf("%v", r.FindAllStringIndex(s, -1)) // [[9 13] [22 26]]
-	
-	// Find words that *end* with wood
-	r, err = regexp.Compile(`wood\b`)               //   1      3 
-	fmt.Printf("%v", r.FindAllStringIndex(s, -1)) // [[9 13] [46 50]]
 
-	// Find words that *start* and *end* with wood
-	r, err = regexp.Compile(`\bwood\b`)             //   1
-	fmt.Printf("%v", r.FindAllStringIndex(s, -1)) // [[9 13]]
-	 	
+```go
+s := "All is well that ends well"
+//    012345678901234567890123456
+//              1         2
+r, err := regexp.Compile(`well$`)
+fmt.Printf("%v", r.FindStringIndex(s)) // Prints [22 26]
+
+r, err = regexp.Compile(`well`)
+fmt.Printf("%v ", r.MatchString(s)) // true, but matches with first
+					    // occurrence of 'well'
+fmt.Printf("%v", r.FindStringIndex(s)) // Prints [7 11], the match starts at 7 and end before 11.
+
+r, err = regexp.Compile(`ends$`)
+fmt.Printf("%v ", r.MatchString(s)) // false, not at end of line.
+```
+
+You can find a word boundary with '\b'. The *FindAllStringIndex*-function captures all the hits for a regexp in a container array.
+
+```go
+s := "How much wood would a woodchuck chuck in Hollywood?"
+//    012345678901234567890123456789012345678901234567890
+//              10        20        30        40        50
+//             -1--         -2--                    -3--
+// Find words that *start* with wood
+r, err := regexp.Compile(`\bwood`)              //    1      2
+fmt.Printf("%v", r.FindAllStringIndex(s, -1)) // [[9 13] [22 26]]
+
+// Find words that *end* with wood
+r, err = regexp.Compile(`wood\b`)               //   1      3 
+fmt.Printf("%v", r.FindAllStringIndex(s, -1)) // [[9 13] [46 50]]
+
+// Find words that *start* and *end* with wood
+r, err = regexp.Compile(`\bwood\b`)             //   1
+fmt.Printf("%v", r.FindAllStringIndex(s, -1)) // [[9 13]]
+```
+
 ## Character Classes ##
 
 Instead of a literal character you can require a set (or class) of characters at any location. In this example [uio] is a "character class". Any of the characters in the square brackets will satisfy the regexp. Thus, this regexp will match 'Hullo', 'Hillo', and 'Hollo' 
-	 	
-	r, err := regexp.Compile(`H[uio]llo`)
-	// Will print 'Hullo'.
-	fmt.Printf(r.FindString("Hello Regular Expression. Hullo again."))
+
+```go
+r, err := regexp.Compile(`H[uio]llo`)
+// Will print 'Hullo'.
+fmt.Printf(r.FindString("Hello Regular Expression. Hullo again."))
+```
 	 	
 A negated character class reverses the match of the class. In this case it Will match all strings 'H.llo', where the dot is *not* 'o', 'i' or 'u'. It will not match "Hullo", "Hillo", "Hollo", but it will match "Hallo" and even "H9llo".
 	 	
-	r, err := regexp.Compile(`H[^uio]llo`)
-	fmt.Printf("%v ", r.MatchString("Hillo")) // false
-	fmt.Printf("%v ", r.MatchString("Hallo")) // true
-	fmt.Printf("%v ", r.MatchString("H9llo")) // true
+```go
+r, err := regexp.Compile(`H[^uio]llo`)
+fmt.Printf("%v ", r.MatchString("Hillo")) // false
+fmt.Printf("%v ", r.MatchString("Hallo")) // true
+fmt.Printf("%v ", r.MatchString("H9llo")) // true
+```
 	 	
 ## POSIX character classes
 
@@ -367,13 +425,15 @@ talking about the 26 letters in ASCII range 65-90, not including letters with di
 
 Example: Find a sequence of a lower case letter, a punctuation character, a space (blank) and a digit:
 
-	r, err := regexp.Compile(`[[:lower:]][[:punct:]][[:blank:]][[:digit:]]`)
-	if r.MatchString("Fred: 12345769") == true {
-		                 ----
-		fmt.Printf("Match ") // 
-	} else {
-		fmt.Printf("No match ")
-	}
+```go
+r, err := regexp.Compile(`[[:lower:]][[:punct:]][[:blank:]][[:digit:]]`)
+if r.MatchString("Fred: 12345769") == true {
+			 ----
+	fmt.Printf("Match ") // 
+} else {
+	fmt.Printf("No match ")
+}
+```
 
 I never use those, because they require more typing, but they might actually be a good idea in 
 projects with many developers where not everybody is as well versed in regular expressions as you are.
@@ -389,77 +449,88 @@ re2 engine](https://code.google.com/p/re2/wiki/Syntax "unicode blocks of re2").
 
 We start with a simple example from the Greek code block.
 
-	r, err := regexp.Compile(`\p{Greek}`)
+```go
+r, err := regexp.Compile(`\p{Greek}`)
 
-	if r.MatchString("This is all Γςεεκ to me.") == true {
-		fmt.Printf("Match ") // Will print 'Match'
-	} else {
- 		fmt.Printf("No match ")
-	}
+if r.MatchString("This is all Γςεεκ to me.") == true {
+	fmt.Printf("Match ") // Will print 'Match'
+} else {
+	fmt.Printf("No match ")
+}
+```
 	
 On the Windows-1252 codepage there is a mu, but it
 doesn't qualify, because \p{Greek} covers only 
 http://en.wikipedia.org/wiki/Greek_and_Coptic
 the range U+0370..U+03FF.
 
-	if r.MatchString("the µ is right before ¶") == true {
-		fmt.Printf("Match ") 
-	} else {
- 		fmt.Printf("No match ") // Will print 'No match'
-	}
+```go
+if r.MatchString("the µ is right before ¶") == true {
+	fmt.Printf("Match ") 
+} else {
+	fmt.Printf("No match ") // Will print 'No match'
+}
+```
 
 Some extra cool letters from the Greek and Coptic
 codepage that qualify as 'Greek' although they are
 probably Coptic, so be careful.
 
-	if r.MatchString("ϵ϶ϓϔϕϖϗϘϙϚϛϜ") == true {
-		fmt.Printf("Match ") // Will print 'Match'
-	} else {
-		fmt.Printf("No match ") 
-	}
+```go
+if r.MatchString("ϵ϶ϓϔϕϖϗϘϙϚϛϜ") == true {
+	fmt.Printf("Match ") // Will print 'Match'
+} else {
+	fmt.Printf("No match ") 
+}
+```
 	
 ### Example: Braille ###
 	
 You have to use a font that supports [Braille](http://en.wikipedia.org/wiki/Braille "Braille").
 I have my doubts that this is useful unless combined with a Braille capable printer, but there you go.
 
-	r2, err := regexp.Compile(`\p{Braille}`)
-	if r2.MatchString("This is all ⢓⢔⢕⢖⢗⢘⢙⢚⢛ to me.") == true {
-		fmt.Printf("Match ") // Will print 'Match'
-	} else {
-		fmt.Printf("No match ")
-	}
+```go
+r2, err := regexp.Compile(`\p{Braille}`)
+if r2.MatchString("This is all ⢓⢔⢕⢖⢗⢘⢙⢚⢛ to me.") == true {
+	fmt.Printf("Match ") // Will print 'Match'
+} else {
+	fmt.Printf("No match ")
+}
+```
 
 ### Example: Cherokee ###
 
 You have to use a font that supports Cherokee (e.g. Code2000).
 The story of the Cherokee script is definitely worth [reading about](http://en.wikipedia.org/wiki/Cherokee#Language_and_writing_system "Cherokee").
 
-	r3, err := regexp.Compile(`\p{Cherokee}`)
-	if r3.MatchString("This is all ᏯᏰᏱᏲᏳᏴ to me.") == true {
-		fmt.Printf("Match ") // Will print 'Match'
-	} else {
-		fmt.Printf("No match ")
-	}
+```go
+r3, err := regexp.Compile(`\p{Cherokee}`)
+if r3.MatchString("This is all ᏯᏰᏱᏲᏳᏴ to me.") == true {
+	fmt.Printf("Match ") // Will print 'Match'
+} else {
+	fmt.Printf("No match ")
+}
+```
 
 ## Alternatives ##
 
 You can provide alternatives using the pipe-symbol '|' to allow two (or more) different possible matches. If you want to allow alternatives only in parts of the regular expression, you can use parentheses for grouping.
-	 	
-	r, err1 := regexp.Compile(`Jim|Tim`)
-	fmt.Printf("%v", r.MatchString("Dickie, Tom and Tim")) // true
-	fmt.Printf("%v", r.MatchString("Jimmy, John and Jim")) // true
 
-	t, err2 := regexp.Compile(`Santa Clara|Santa Barbara`)
-	s := "Clara was from Santa Barbara and Barbara was from Santa Clara"
-	//                   -------------                      -----------
-	fmt.Printf("%v", t.FindAllStringIndex(s, -1))
-	// [[15 28] [50 61]]
+```go
+r, err1 := regexp.Compile(`Jim|Tim`)
+fmt.Printf("%v", r.MatchString("Dickie, Tom and Tim")) // true
+fmt.Printf("%v", r.MatchString("Jimmy, John and Jim")) // true
 
-	u, err3 := regexp.Compile(`Santa (Clara|Barbara)`) // Equivalent
-	v := "Clara was from Santa Barbara and Barbara was from Santa Clara"
-	//                   -------------                      -----------
-	fmt.Printf("%v", u.FindAllStringIndex(v, -1))
-	// [[15 28] [50 61]]
-	 	
+t, err2 := regexp.Compile(`Santa Clara|Santa Barbara`)
+s := "Clara was from Santa Barbara and Barbara was from Santa Clara"
+//                   -------------                      -----------
+fmt.Printf("%v", t.FindAllStringIndex(s, -1))
+// [[15 28] [50 61]]
+
+u, err3 := regexp.Compile(`Santa (Clara|Barbara)`) // Equivalent
+v := "Clara was from Santa Barbara and Barbara was from Santa Clara"
+//                   -------------                      -----------
+fmt.Printf("%v", u.FindAllStringIndex(v, -1))
+// [[15 28] [50 61]]
+``` 	
 
