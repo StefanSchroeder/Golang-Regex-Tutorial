@@ -37,5 +37,5 @@ But you probably already knew that.
 
 > This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.
 
-Written by Stefan Schroeder.
+Written by Stefan Schröder.
 
