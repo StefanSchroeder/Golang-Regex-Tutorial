@@ -1,4 +1,4 @@
-What changes would you like to see in this tutorial? Write an Issue!
+[![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
 
 Golang-Regex-Tutorial
 =====================
@@ -16,7 +16,7 @@ This is a regular expression tutorial for Go, the language.
 Go to http://www.golang.org for more information about Go.
 
 
-This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 License.
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 License.
 
 I am planning to setup gh-pages: http://stefanschroeder.github.io/Golang-Regex-Tutorial/
 
