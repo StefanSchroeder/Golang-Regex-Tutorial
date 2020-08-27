@@ -402,7 +402,7 @@ fmt.Printf("%v ", r.MatchString("H9llo")) // true
 ## POSIX character classes
 
 The Golang regexp library implements the POSIX character classes. These are simply
-aliases for frequently used classes that are given are more readable name. The classes are:
+aliases for frequently used classes that are given a more readable name. The classes are:
 (https://github.com/google/re2/blob/master/doc/syntax.txt)
 
 	[:alnum:]	alphanumeric (≡ [0-9A-Za-z])
