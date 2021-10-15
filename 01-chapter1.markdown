@@ -206,7 +206,7 @@ fmt.Printf("%v", res)
 
 ## Literal Special Characters ##
 
-Finding one backslash '\': It must be escaped twice in the regex and once in the string.
+Finding one backslash '\\': It must be escaped twice in the regex and once in the string.
 
 ```go
 r, err := regexp.Compile("C:\\\\")
@@ -235,7 +235,7 @@ Finding a literal dollar symbol:
 ```go
 r, err := regexp.Compile(`\$`)
 if len(r.FindString("He paid $150 for that software.")) != 0 {
-	fmt.Printf("Found $-symbol.") // <-
+	fmt.Printf("Found $-symbol.") // <---
 } else {
 	fmt.Printf("No $$$.")
 }
