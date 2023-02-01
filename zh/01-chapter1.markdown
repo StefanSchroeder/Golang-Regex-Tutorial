@@ -170,7 +170,7 @@ FindString 会在首次匹配后即返回。如果你想尽可能多地匹配你
 
 ## 特殊字符的字面量 ##
 
-查找 '\'：在字符串里 '\' 需要跳脱一次，而在正则里就要跳脱两次。
+查找 '\\'：在字符串里 '\\' 需要转义一次，而在正则里就要转义两次。
 
 	r, err := regexp.Compile(`C:\\\\`)
 	if r.MatchString("Working on drive C:\\") == true {
@@ -194,7 +194,7 @@ FindString 会在首次匹配后即返回。如果你想尽可能多地匹配你
 
 	r, err := regexp.Compile(`\$`)
 	if len(r.FindString("He paid $150 for that software.")) != 0 {
-		fmt.Printf("Found $-symbol.") // <-
+		fmt.Printf("Found $-symbol.") // <---
 	} else {
 		fmt.Printf("No $$$.")
 	}
